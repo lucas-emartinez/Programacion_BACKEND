@@ -17,13 +17,13 @@ console.log(productManager.getProducts());
 
 // Se llamará al método “addProduct” con los campos
 // El objeto debe agregarse satisfactoriamente con un id generado automáticamente SIN REPETIRSE
-console.log(productManager.addProduct(product.title, product.stock, product.price, product.code, product.thumbnail, product.description))
+console.log(productManager.addProduct(product))
 
 // Se llamará el método “getProducts” nuevamente, esta vez debe aparecer el producto recién agregado
 console.log(productManager.getProducts())
 
 // Se llamará al método “addProduct” con los mismos campos de arriba, debe arrojar un error porque el código estará repetido.
-console.log(productManager.addProduct(product.title, product.stock, product.price, product.code, product.thumbnail, product.description))
+console.log(productManager.addProduct(product))
 
 // Se evaluará que getProductById devuelva error si no encuentra el producto o el producto en caso de encontrarlo
 console.log(productManager.getProductById(1))
