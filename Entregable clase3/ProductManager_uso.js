@@ -1,28 +1,64 @@
 const ProductManager = require('./ProductManager');
-const ProductEntity = require('./ProductEntity');
+const Product = require('./Product');
 
 const productManager = new ProductManager("./productos.json");
 
-const product = new ProductEntity(
-    title = 'Producto 1',
-    description = 'Descripción del producto',
+const product1 = new Product(
+    title = "producto prueba 1",
+    description = 'Este es un producto prueba 1',
     price = 200,
     thumbnail = 'Sin imagen',
-    code = 'abc123',
+    code = 'abc121',
     stock = 25
 );
 
-(async () => {
-    // Se llamará “getProducts” recién creada la instancia, debe devolver un arreglo vacío []
+const product2 = new Product(
+    title = "producto prueba 2",
+    description = 'Este es un producto prueba 2',
+    price = 164,
+    thumbnail = 'Sin imagen',
+    code = 'abc122',
+    stock = 543
+);
+
+ // Obviamente si queremos actualizar, no deberiamos modificar el codigo del producto, ya que antes habiamos verificado que no deberian existir dos productos con el mismo codigo,
+ // por lo tanto, si cambiamos el codigo, el producto no se va a poder actualizar. Si esto pasará, estariamos rompiendo la integridad de los datos ya que el codigo es unico.
+const productUpdated = new Product(
+    title = "producto prueba ACTUALIZADO",
+    description = 'Este es un producto prueba 3',
+    price = 240,
+    thumbnail = 'Sin imagen',
+    code = 'abc121',
+    stock = 120
+);
+
+const test = async () => {
+
+    // Obtiene un arreglo vacio si no hay productos
     console.log(await productManager.getProducts());
 
-    // Se llamará al método “addProduct” con los campos
-    console.log(await productManager.addProduct(product));
-
-    // Se llamará el método “getProducts” nuevamente, esta vez debe aparecer el producto recién agregado
+    // Agregamos productos
+    console.log(await productManager.addProduct(product1));
+    console.log(await productManager.addProduct(product2));
+ 
+    // Obtenemos los productos agregados
     console.log(await productManager.getProducts());
 
-    // Se evaluará que getProductById devuelva error si no encuentra el producto o el producto en caso de encontrarlo
-    console.log(await productManager.getProductById(1));
+    // Obtenemos un producto por ID (ID 100 suponemos que no existe y deberia devolver un error)
+    console.log(await productManager.getProductById(100));
 
-})();
+    // Actualizamos un producto
+    console.log(await productManager.updateProduct(1, productUpdated));
+
+    // Obtenemos los productos actualizados
+    console.log(await productManager.getProducts());
+
+    // Eliminamos un producto con ID 2
+    console.log(await productManager.deleteProduct(1));
+
+    // Verificamos la eliminacion
+    console.log(await productManager.getProducts());
+};
+
+// Ejecución del test
+test()

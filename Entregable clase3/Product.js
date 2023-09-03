@@ -1,4 +1,4 @@
-class ProductEntity {
+class Product {
 
     // Principio de encapsulamiento, 
     // solo se puede acceder a los atributos de la clase a través de los getter y setter
@@ -12,7 +12,6 @@ class ProductEntity {
     #description;
 
     constructor(title, description, stock, price, code, thumbnail) {
-        this.#id = null;
         this.#title = title;
         this.#description = description
         this.#stock = stock;
@@ -91,6 +90,6 @@ class ProductEntity {
     
 }
 
-module.exports = ProductEntity;
+module.exports = Product;
 
 
