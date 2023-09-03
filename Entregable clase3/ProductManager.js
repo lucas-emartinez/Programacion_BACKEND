@@ -59,12 +59,11 @@ class ProductManager {
 
             if (product.code !== updatedProduct.getCode()) return 'No se puede modificar el código del producto';
 
-            // Setters de la clase Product. El ID NO SE MODIFICA.
+            // Setters de la clase Product. El ID NO SE MODIFICA, El Code lo omitimos ya que TAMPOCO, ademas, lo estamos verificando arriba.
             product.title = updatedProduct.getTitle();
             product.description = updatedProduct.getDescription();
             product.price = updatedProduct.getPrice();
             product.thumbnail = updatedProduct.getThumbnail();
-            product.code = updatedProduct.getCode();
             product.stock = updatedProduct.getStock();
 
             await fs.promises.writeFile(this.path, JSON.stringify(products));
