@@ -35,7 +35,7 @@ app.get("/products", async (req, res) => {
     const { limit } = req.query;
 
     if (limit) {
-        const products = products.slice(0, limit);
+        products = products.slice(0, limit);
         res.status(200).json({products});
     } else {
         res.status(200).json({products});
