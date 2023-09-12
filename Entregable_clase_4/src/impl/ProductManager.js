@@ -38,9 +38,8 @@ class ProductManager {
         try {
             const products = await this.getProducts();
             const product = products.find(p => p.id == id);
-            console.log(product)
             
-            return product || 'El producto no existe'
+            return product || 'Not found'
         } catch (error) {
             return `Error al obtener el producto: ${error}`;
         }

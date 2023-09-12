@@ -30,15 +30,15 @@ app.get("/", (req, res) => {
 });
 
 app.get("/products", async (req, res) => {
-    const products = await productManager.getProducts();
+    let products = await productManager.getProducts();
         
     const { limit } = req.query;
 
     if (limit) {
-        const productsLimit = products.slice(0, limit);
-        res.status(200).json(productsLimit);
+        const products = products.slice(0, limit);
+        res.status(200).json({products});
     } else {
-        res.status(200).json(products);
+        res.status(200).json({products});
     }
 });
 
@@ -50,15 +50,19 @@ app.get("/products/:pid", async (req, res) => {
         res.status(400).json({error: 'Debe ingresar un id'});
     }
 
+    // Ya se controla si existe o no el producto en el Manager
     const product = await productManager.getProductById(pid);
-    if (product === 'El producto no existe') {
-        res.status(404).json({error: 'El producto no existe'});
+
+    if (product === "Not found"){
+        res.status(404).json({error: "No encontramos el producto"})
     } else {
-        res.status(200).json(product);
+        res.status(200).json({product})
     }
+
 });
 
 
 app.listen(8000, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
+
