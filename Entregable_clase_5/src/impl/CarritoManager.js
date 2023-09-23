@@ -1,10 +1,11 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { __dirname } from '../utils.js';
 
-// Manager requerido para comprobacion de que el id del producto a añadir al carrito exista
-const ProductManager = require("../impl/ProductManager");
-// Instanciacion de Manager
-const productManager = new ProductManager(path.resolve(__dirname, "../db/products.json"));
+
+// Manager requerido 
+import { productManager } from "../impl/ProductManager.js";
+
 
 
 class CarritoManager {
@@ -14,15 +15,16 @@ class CarritoManager {
 
     async addCarrito() {
         try {
-
+            
             const carritos = await this.getCarritos();
-
+            
             const id = carritos.length ? carritos[carritos.length - 1].id + 1 : 1;
 
             const carrito = {
                 id: id,
                 products: []
             }
+            
             await fs.promises.writeFile(this.path, JSON.stringify([...carritos, carrito]));
 
             return 'Carrito añadido correctamente';
@@ -114,4 +116,4 @@ class CarritoManager {
 
 }
 
-module.exports = CarritoManager;
+export const carritoManager = new CarritoManager(path.resolve(__dirname, "db/carritos.json"));

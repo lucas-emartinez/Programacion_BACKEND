@@ -1,12 +1,8 @@
-const path = require("path");
-
 // Manager requerido
-const CarritoManager = require("../impl/CarritoManager");
-// Instanciacion de Manager
-const carritoManager = new CarritoManager(path.resolve(__dirname, "../db/carritos.json"));
+import { carritoManager }  from "../impl/CarritoManager.js";
 
 const addCarrito = async (req, res) => {
-
+    
     const result = await carritoManager.addCarrito();
 
     if (result === "Carrito añadido correctamente") {
@@ -65,4 +61,9 @@ const deleteCarrito = async (req, res) => {
 }; 
 
 
-module.exports = { addCarrito, addProductToCarrito, getProductsCarritoById, deleteCarrito };
+export default {
+    addCarrito,
+    addProductToCarrito,
+    getProductsCarritoById,
+    deleteCarrito
+};

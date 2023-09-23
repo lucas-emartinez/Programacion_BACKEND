@@ -1,15 +1,15 @@
-const { Router } = require('express');
+import { Router } from 'express';
+
+import carritoController from '../controllers/carritosController.js';
 
 const router = Router();
 
-const carritoController = require('../controllers/carritosController')
-
-router.route("/carts/:cid")
+router.route("/:cid")
     .get(carritoController.getProductsCarritoById)
     .delete(carritoController.deleteCarrito)
     
-router.post("/carts", carritoController.addCarrito)
-router.post("/carts/:cid/products/:pid", carritoController.addProductToCarrito)
+router.post("/", carritoController.addCarrito)
+router.post("/:cid/products/:pid", carritoController.addProductToCarrito)
     
 
-module.exports = router;
+export default router;

@@ -1,4 +1,7 @@
-const fs = require('fs');
+import fs from 'fs';
+import path from 'path';
+import { __dirname } from '../utils.js';
+
 
 
 class ProductManager {
@@ -107,4 +110,4 @@ class ProductManager {
 
 }
 
-module.exports = ProductManager;
+export const productManager = new ProductManager(path.resolve(__dirname,  "db/products.json"));

@@ -1,13 +1,13 @@
-const express = require("express");
-const path = require("path");
+import express from "express";
+import path from "path";
+import { __dirname } from "./utils.js";
 
 
-const productsRoute = require('./routes/productsRoute')
-const cartsRoute = require('./routes/cartsRoute')
+import productsRoute from './routes/productsRoute.js'
+import cartsRoute from './routes/cartsRoute.js'
 
 // Instanciacion de Express
 const app = express();
-
 
 // Definicion de puerto
 const PORT = 8000;
@@ -15,14 +15,11 @@ const PORT = 8000;
 // Middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use("/static", express.static(path.join(__dirname, "public")));
-
+app.use("/static", express.static(path.join(__dirname, "../public")));
 
 // Endpoints
-app.use('/api', productsRoute)
-app.use('/api', cartsRoute)
-
-
+app.use('/api/products', productsRoute)
+app.use('/api/carts', cartsRoute)
 
 app.listen(8000, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);

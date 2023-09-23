@@ -1,9 +1,5 @@
-const path = require("path");
-
 // Manager requerido
-const ProductManager = require("../impl/ProductManager");
-// Instanciacion de Manager
-const productManager = new ProductManager(path.resolve(__dirname, "../db/products.json"));
+import { productManager } from "../impl/ProductManager.js";
 
 const addProduct = async (req, res) => {
     const product = req.body;
@@ -94,4 +90,10 @@ const deleteProduct = async (req, res) => {
 };
 
 
-module.exports = { getProducts, getProductById, addProduct, updateProduct, deleteProduct };
+export default  { 
+    getProducts, 
+    getProductById, 
+    addProduct, 
+    updateProduct,
+    deleteProduct 
+};
