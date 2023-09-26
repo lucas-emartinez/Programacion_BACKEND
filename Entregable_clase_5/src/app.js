@@ -1,27 +1,56 @@
 import express from "express";
-import path from "path";
-import { __dirname } from "./utils.js";
+import { Server } from "socket.io";
+import handlebars from "express-handlebars"
+import __dirname from "./utils.js";
+
+// Rutas
+import viewsRouter from './routes/views.route.js'
+import productsRouter from './routes/products.route.js'
+import cartsRouter from './routes/carts.route.js'
 
 
-import productsRoute from './routes/productsRoute.js'
-import cartsRoute from './routes/cartsRoute.js'
-
-// Instanciacion de Express
+// Inicializacion de Express
 const app = express();
 
 // Definicion de puerto
 const PORT = 8000;
 
+// Inicializacion de motor de plantillas
+app.engine("handlebars", handlebars.engine());
+
+// Vistas
+app.set("views", __dirname + "/views");
+
+// Indicamos el motor de plantillas a utilizar
+app.set("view engine", "handlebars");
+
 // Middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use("/static", express.static(path.join(__dirname, "../public")));
+app.use(express.static(__dirname + "/public"));
 
 // Endpoints
-app.use('/api/products', productsRoute)
-app.use('/api/carts', cartsRoute)
+app.use('/', viewsRouter)
+app.use('/api/products', productsRouter)
+app.use('/api/carts', cartsRouter)
 
-app.listen(8000, () => {
+// Servidor 
+const httpServer = app.listen(8000, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
+});
+
+// Websocket
+const SocketServer = new Server(httpServer);
+
+SocketServer.on("connection", (socket) => {
+    console.log("Cliente conectado", socket.id);
+
+    socket.on('message', (data) => {
+        console.log(data);
+    });
+
+    socket.on("disconnect", () => {
+        console.log("Cliente desconectado", socket.id);
+    });
 });
 

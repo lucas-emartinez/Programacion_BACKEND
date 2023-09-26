@@ -1,10 +1,18 @@
 import fs from 'fs';
 import path from 'path';
-import { __dirname } from '../utils.js';
+import __dirname from '../utils.js';
 
 
 // Manager requerido 
 import { productManager } from "../impl/ProductManager.js";
+import errors from '../config/errors.js';
+// 
+const {
+    CART_NOT_EXIST,
+    PRODUCT_TO_ADD_NOT_EXIST,
+    GET_CARTS_ERROR
+} = errors;
+
 
 
 
@@ -17,7 +25,7 @@ class CarritoManager {
         try {
             
             const carritos = await this.getCarritos();
-            
+
             const id = carritos.length ? carritos[carritos.length - 1].id + 1 : 1;
 
             const carrito = {
@@ -42,12 +50,12 @@ class CarritoManager {
 
             const carrito = carritos.find(c => c.id == carritoId);
 
-            if(!carrito) return 'El carrito al que intenta añadir el producto no existe';
+            if(!carrito) return CART_NOT_EXIST;
 
             const product = await productManager.getProductById(productId);
         
 
-            if(product == 'Not found') return 'El producto que intenta añadir no existe';
+            if(product == PRODUCT_NOT_EXIST) return PRODUCT_TO_ADD_NOT_EXIST;
 
             const productExist = carrito.products && carrito.products.find(p => p.id == productId);
 
@@ -76,12 +84,14 @@ class CarritoManager {
         try {
             const carritos = await this.getCarritos();
             const carrito = carritos.find(p => p.id == id);
-            
+
+            if (!carrito) return errors.CART_NOT_EXIST;
+
             const products = carrito.products;
 
-            return products || 'Not found'
+            return products;
         } catch (error) {
-            return `Error al obtener el carrito: ${error}`;
+            return {error: `Error al obtener los productos del carrito`};
         }
 
     }
@@ -102,7 +112,7 @@ class CarritoManager {
     async deleteCarrito(id) {
         try {
             let carritos = await this.getCarritos();
-            if (!carritos) return 'No hay carritos cargados';
+            if (!carritos) return errors.GET_CARTS_ERROR;
 
             carritos = carritos.filter(p => p.id != id);
 
