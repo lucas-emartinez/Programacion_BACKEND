@@ -5,8 +5,8 @@ import __dirname from '../utils.js';
 
 // Manager requerido 
 import { productManager } from "../impl/ProductManager.js";
+
 import errors from '../config/errors.js';
-// 
 const {
     CART_NOT_EXIST,
     PRODUCT_TO_ADD_NOT_EXIST,
@@ -85,7 +85,7 @@ class CarritoManager {
             const carritos = await this.getCarritos();
             const carrito = carritos.find(p => p.id == id);
 
-            if (!carrito) return errors.CART_NOT_EXIST;
+            if (!carrito) return CART_NOT_EXIST;
 
             const products = carrito.products;
 
@@ -112,7 +112,7 @@ class CarritoManager {
     async deleteCarrito(id) {
         try {
             let carritos = await this.getCarritos();
-            if (!carritos) return errors.GET_CARTS_ERROR;
+            if (!carritos) return GET_CARTS_ERROR;
 
             carritos = carritos.filter(p => p.id != id);
 

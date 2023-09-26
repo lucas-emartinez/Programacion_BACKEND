@@ -1,0 +1,22 @@
+<div>
+    <h1>Productos</h1>
+    <div class="productsContainer">
+        {{#if products}}
+            {{#each products}}
+                <div class="productContainer">
+                    <div class="thumbnailContainer">
+                            <img class="thumbnail" src="{{this.thumnail}}" alt="product image" />
+                    </div>
+                    <div class="productInfo">
+                        <h2>{{this.title}}</h2>
+                        <p>{{this.description}}</p>
+                        <p>${{this.price}}</p>
+                    </div>
+                </div>
+            {{/each}}
+        {{else}}
+            <h2 class="noProducts">No hay productos</h2>
+        {{/if}}
+    </div>
+</div>
+<script src="/js/home.js"></script>

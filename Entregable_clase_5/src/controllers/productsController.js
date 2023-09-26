@@ -19,9 +19,7 @@ const {
 const addProduct = async (req, res) => {
     const product = req.body;
     const files = req.files;
-
-   
-
+    console.log(files)
     if (files) {
         const images = files.map((file) => {
             return file.path;

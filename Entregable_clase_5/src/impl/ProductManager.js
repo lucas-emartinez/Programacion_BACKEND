@@ -97,7 +97,7 @@ class ProductManager {
 
             const existingProduct = products.find(p => p.id == id);
             
-            if (!existingProduct) return errors.PRODUCT_NOT_EXIST;
+            if (!existingProduct) return PRODUCT_NOT_EXIST;
             
             if (product.title) existingProduct.title = product.title
             if (product.description) existingProduct.description = product.description;
@@ -108,7 +108,7 @@ class ProductManager {
             if (existingProduct.code != product.code) {
                 product.code = existingProduct.code;
             } else {
-                return errors.PRODUCT_CODE_EXIST;
+                return PRODUCT_CODE_EXIST;
             }
 
             await fs.promises.writeFile(this.path, JSON.stringify(products));

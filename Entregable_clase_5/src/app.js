@@ -13,7 +13,7 @@ import cartsRouter from './routes/carts.route.js'
 const app = express();
 
 // Definicion de puerto
-const PORT = 8000;
+const PORT = process.env.PORT || 8080;
 
 // Inicializacion de motor de plantillas
 app.engine("handlebars", handlebars.engine());
@@ -46,8 +46,12 @@ SocketServer.on("connection", (socket) => {
     console.log("Cliente conectado", socket.id);
 
     socket.on('message', (data) => {
-        console.log(data);
+        console.log(data, socket.id);
     });
+
+    socket.emit('singleSocketResponse', 'Bienvenido al servidor')
+
+    socket.broadcast.emit('socketBroadcast', 'Un nuevo cliente se ha conectado')
 
     socket.on("disconnect", () => {
         console.log("Cliente desconectado", socket.id);

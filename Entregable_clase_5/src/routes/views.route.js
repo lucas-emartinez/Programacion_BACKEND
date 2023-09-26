@@ -1,9 +1,8 @@
 import { Router } from 'express';
+import viewsController from '../controllers/viewsController.js';
 
 const router = Router();
 
-router.get("/", (req, res) => {
-    res.render('index', {name: "Lucas", style: "index.css"})
-});
+router.get("/", viewsController.home);
 
 export default router;
