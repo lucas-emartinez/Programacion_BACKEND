@@ -3,6 +3,7 @@ import path from 'path';
 import __dirname from '../utils.js';
 import errors from '../config/errors.js';
 import Product from '../models/Product.js';
+import { socketServer } from '../app.js';
 
 const {
     PRODUCT_CODE_EXIST,
@@ -91,6 +92,17 @@ class ProductManager {
         }
     }
 
+    async getProductByCode(code) {
+        try {
+            const products = await this.getProducts();
+            const product = products.find(p => p.code == code);
+            
+            return product || PRODUCT_NOT_EXIST
+        } catch (error) {
+            return GET_PRODUCTS_ERROR;
+        }
+    }
+
     async updateProduct(id, product) {
         try {
             const products = await this.getProducts();
@@ -102,18 +114,22 @@ class ProductManager {
             if (product.title) existingProduct.title = product.title
             if (product.description) existingProduct.description = product.description;
             if (product.price) existingProduct.price = product.price;
-            if (product.thumbnails) existingProduct.thumbnails = product.thumbnails;
             if (product.stock && product.stock >= 0) existingProduct.stock = product.stock;
             if (product.category) existingProduct.category = product.category;
-            if (existingProduct.code != product.code) {
-                product.code = existingProduct.code;
-            } else {
-                return PRODUCT_CODE_EXIST;
+            if (product.code && existingProduct.code != product.code) {
+                const productCodeExist = products && products.find(p => p.code == product.code);
+                if (productCodeExist) {
+                    return PRODUCT_CODE_EXIST
+                } else {
+                    existingProduct.code = product.code;
+                };
             }
+
+            socketServer.emit('updateProduct', existingProduct);
 
             await fs.promises.writeFile(this.path, JSON.stringify(products));
 
-            return 'Producto actualizado correctamente'	;
+            return existingProduct;
         } catch (error) {
             return `Error al actualizar el producto: ${error}`;
         }
@@ -123,6 +139,16 @@ class ProductManager {
         try {
 
             let products = await this.getProducts();
+
+            const product = products.find(p => p.id == id);
+            
+            if(product) {
+                product.thumbnails.forEach(thumbnail => {
+                    if(fs.existsSync(__dirname + `/public${thumbnail}`)){
+                        fs.promises.unlink(__dirname + `/public${thumbnail}`);
+                    }
+                });
+            }
 
             products = products.filter(p => p.id != id);
 

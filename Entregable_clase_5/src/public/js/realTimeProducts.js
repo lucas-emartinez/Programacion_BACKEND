@@ -50,7 +50,6 @@ socket.on('newProduct', (data) => {
 });
 
 socket.on('deleteProduct', (data) => {
-    console.log(data)
     const product = data;
     const productsContainer = document.querySelector('.productsContainer');
     const productContainer = document.querySelector(`.productContainer[data-id="${product.id}"]`);
@@ -59,10 +58,12 @@ socket.on('deleteProduct', (data) => {
 });
 
 socket.on('updateProduct', (data) => {
+
     const product = data;
     const productContainer = document.querySelector(`.productContainer[data-id="${product.id}"]`);
+ 
 
-    productContainer.replaceWith = `
+    productContainer.innerHTML = `
         <!-- Contenido del producto -->
         ${product.thumbnails.map(thumbnail => `<img class="thumbnail" src="${thumbnail}" alt="product image" />`).join('')}
         <div class="productInfo">

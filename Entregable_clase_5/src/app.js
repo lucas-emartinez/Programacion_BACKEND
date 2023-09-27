@@ -1,5 +1,5 @@
 import express from "express";
-import { Server } from "socket.io";
+import WebSocketServer from "./config/socket.js";
 import handlebars from "express-handlebars"
 import __dirname from "./utils.js";
 
@@ -7,7 +7,7 @@ import __dirname from "./utils.js";
 import viewsRouter from './routes/views.route.js'
 import productsRouter from './routes/products.route.js'
 import cartsRouter from './routes/carts.route.js'
-import WebSocketServer from "./config/socket.js";
+
 
 
 // Inicializacion de Express

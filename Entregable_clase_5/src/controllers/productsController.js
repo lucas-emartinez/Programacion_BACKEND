@@ -107,6 +107,8 @@ const updateProduct = async (req, res) => {
 
         if (result == PRODUCT_NOT_EXIST) return res.status(404).json({ error: PRODUCT_NOT_EXIST })
         if (result == PRODUCT_CODE_EXIST) return res.status(400).json({ error: PRODUCT_CODE_EXIST })
+
+        socketServer.emit('updateProduct', result)
     
         return res.status(200).json({ result })   
     } catch (error) {

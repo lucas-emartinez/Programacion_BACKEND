@@ -17,9 +17,6 @@ const realTimeProducts = async (req, res) => {
         const products = await productManager.getProducts();
 
         socketServer.on('connection', (socket) => {
-
-            console.log(`Cliente conectado - ID ${socket.id}`)
-
             socket.emit('products', products);
         });
 
