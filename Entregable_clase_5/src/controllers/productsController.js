@@ -1,6 +1,8 @@
 // Manager requerido
 import { productManager } from "../impl/ProductManager.js";
 import errors from '../config/errors.js';
+import { socketServer } from "../app.js";
+
 
 const {
     PRODUCT_CODE_EXIST,
@@ -19,9 +21,10 @@ const {
 const addProduct = async (req, res) => {
     const product = req.body;
     const files = req.files;
-    console.log(files)
+
     if (files) {
         const images = files.map((file) => {
+            file.path = '/img/' + file.filename;
             return file.path;
         });
 
@@ -29,6 +32,7 @@ const addProduct = async (req, res) => {
     }
 
     try {
+
         const result = await productManager.addProduct(product);
         
         if (result == PRODUCT_CODE_EXIST) return res.status(400).json({ error: PRODUCT_CODE_EXIST });
@@ -41,7 +45,7 @@ const addProduct = async (req, res) => {
         if (result == PRODUCT_MUST_HAVE_POSITIVE_PRICE) return res.status(400).json({ error: PRODUCT_MUST_HAVE_POSITIVE_PRICE });
         if (result == PRODUCT_MUST_HAVE_POSITIVE_STOCK) return res.status(400).json({ error: PRODUCT_MUST_HAVE_POSITIVE_STOCK });
 
-
+        socketServer.emit('newProduct', result);
 
         return res.status(201).json({ message: result });
 
@@ -112,14 +116,16 @@ const updateProduct = async (req, res) => {
 
 
 const deleteProduct = async (req, res) => {
-    const { pid } = req.query;
+    const { pid } = req.params;
 
     if (!pid) res.status(400).json({ error: 'Debe ingresar un id' });
 
     try {
 
         const result = await productManager.deleteProduct(pid);
-        
+
+        socketServer.emit('deleteProduct', {id: pid})
+
         return res.status(204).json({ message: result })
 
     } catch (error) {

@@ -7,6 +7,7 @@ import __dirname from "./utils.js";
 import viewsRouter from './routes/views.route.js'
 import productsRouter from './routes/products.route.js'
 import cartsRouter from './routes/carts.route.js'
+import WebSocketServer from "./config/socket.js";
 
 
 // Inicializacion de Express
@@ -40,21 +41,4 @@ const httpServer = app.listen(8000, () => {
 });
 
 // Websocket
-const SocketServer = new Server(httpServer);
-
-SocketServer.on("connection", (socket) => {
-    console.log("Cliente conectado", socket.id);
-
-    socket.on('message', (data) => {
-        console.log(data, socket.id);
-    });
-
-    socket.emit('singleSocketResponse', 'Bienvenido al servidor')
-
-    socket.broadcast.emit('socketBroadcast', 'Un nuevo cliente se ha conectado')
-
-    socket.on("disconnect", () => {
-        console.log("Cliente desconectado", socket.id);
-    });
-});
-
+export const socketServer = WebSocketServer(httpServer);

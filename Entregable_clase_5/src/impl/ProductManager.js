@@ -58,7 +58,7 @@ class ProductManager {
 
             await fs.promises.writeFile(this.path, JSON.stringify([...products, newProduct]));
 
-            return 'Producto añadido correctamente';
+            return newProduct;
             
         } catch(error) {
             return `Error al añadir el producto: ${error}`;

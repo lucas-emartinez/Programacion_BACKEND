@@ -3,7 +3,7 @@
     <div class="productsContainer">
         {{#if products}}
             {{#each products}}
-                <div class="productContainer">
+                <div class="productContainer" data-id="{{this.id}}">
                     {{#each this.thumbnails}}
                             <img class="thumbnail" src="{{this}}" alt="product image" />
                     {{/each}}
@@ -19,4 +19,5 @@
         {{/if}}
     </div>
 </div>
-<script src="/js/home.js"></script>
+<script src="socket.io/socket.io.js"></script>
+<script src="/js/realTimeProducts.js"></script>
