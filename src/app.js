@@ -36,7 +36,7 @@ app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsRouter)
 
 // Servidor 
-const httpServer = app.listen(8000, () => {
+const httpServer = app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
 
