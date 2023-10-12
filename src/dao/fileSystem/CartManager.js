@@ -2,11 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import __dirname from '../utils.js';
 
-
 // Manager requerido 
 import { productManager } from "../impl/ProductManager.js";
 
 import errors from '../config/errors.js';
+
 const {
     CART_NOT_EXIST,
     PRODUCT_TO_ADD_NOT_EXIST,
@@ -14,9 +14,7 @@ const {
 } = errors;
 
 
-
-
-class CarritoManager {
+class CartManager {
     constructor(path) {
         this.path = path;
     }
@@ -126,4 +124,4 @@ class CarritoManager {
 
 }
 
-export const carritoManager = new CarritoManager(path.resolve(__dirname, "db/carritos.json"));
+export const cartManager = new CartManager(path.resolve(__dirname, "db/carritos.json"));

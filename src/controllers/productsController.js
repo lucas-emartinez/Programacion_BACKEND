@@ -1,5 +1,5 @@
 // Manager requerido
-import { productManager } from "../impl/ProductManager.js";
+import { productManager } from "../dao/db/ProductManager.js";
 import errors from '../config/errors.js';
 import { socketServer } from "../app.js";
 
@@ -20,7 +20,7 @@ const {
 
 const addProduct = async (req, res) => {
     const product = req.body;
-    const files = req.files;
+    const file = req.file;
 
     if (files) {
         const images = files.map((file) => {
@@ -59,7 +59,7 @@ const getProducts = async (req, res) => {
 
     try {
 
-        let products = await productManager.getProducts();
+        let products = await productManager.findAll();
 
         const { limit } = req.query;
 

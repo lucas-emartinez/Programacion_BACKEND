@@ -1,23 +1,31 @@
 <div>
     <h1>Productos</h1>
     <div class="productsContainer">
-        {{#if products}}
-            {{#each products}}
-                <div class="productContainer" data-id="{{this.id}}">
-                    {{#each this.thumbnails}}
-                            <img class="thumbnail" src="{{this}}" alt="product image" />
-                    {{/each}}
-                    <div class="productInfo">
-                        <h2>{{this.title}}</h2>
-                        <p>{{this.description}}</p>
-                        <p>${{this.price}}</p>
-                    </div>
-                </div>
-            {{/each}}
-        {{else}}
-            <h2 class="noProducts">No hay productos</h2>
-        {{/if}}
+        <div class="productContainer" data-id="{{this.id}}">
+            <table>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Descripcion</th>
+                    <th>Codigo</th>
+                    <th>Categoria</th>
+                    <th>Stock</th>
+                    <th>Precio</th>
+                </tr>
+                <tbody id="productsTableBody">
+                    
+                </tbody>
+        </div>
     </div>
+    <form id="productsForm" enctype="multipart/form-data">
+        <input required="true" type="text" id="title" name="title" placeholder="Titulo" />
+        <input required="true" type="text" id="description" name="description" placeholder="Descripcion" />
+        <input required="true" type="text" id="code" name="code" placeholder="Codigo" />
+        <input required="true" type="text" id="category" name="category" placeholder="Categoria" />
+        <input required="true" type="Number" id="stock" name="stock" placeholder="Stock" />
+        <input required="true" type="Number" id="price" name="id" placeholder="Precio" />
+
+        <button type="submit">Agregar</button>
+    </form>
 </div>
 <script src="socket.io/socket.io.js"></script>
 <script src="/js/realTimeProducts.js"></script>

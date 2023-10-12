@@ -1,5 +1,5 @@
 // Manager requerido
-import { carritoManager }  from "../impl/CarritoManager.js";
+import { cartManager } from "../dao/db/CartManager.js";
 import errors from "../config/errors.js";
 
 const {
@@ -11,20 +11,24 @@ const {
 
 const addCarrito = async (req, res) => {
     try {
-        const result = await carritoManager.addCarrito();
+
+        const product = req.body;
+        const result = await cartManager.addCarrito(product);
+
         return res.status(201).json({ message: result });
+
     } catch (error) {
         return res.status(400).json({ error: error });
     }
 };
 
-const addProductToCarrito = async (req, res) => {
+const addProductToCart = async (req, res) => {
     const { cid, pid } = req.params;
 
     if (!cid || !pid) res.status(400).json({error: 'Debe ingresar un id'});
 
     try {
-        const result = await carritoManager.addProductToCarrito(cid, pid);
+        const result = await cartManager.addProductToCart(cid, pid);
 
         if ( result == CART_NOT_EXIST) return res.status(400).json({ error: CART_NOT_EXIST });
         if ( result == PRODUCT_TO_ADD_NOT_EXIST) return res.status(400).json({ error: PRODUCT_TO_ADD_NOT_EXIST });
@@ -36,14 +40,14 @@ const addProductToCarrito = async (req, res) => {
     }
 };
 
-const getProductsCarritoById = async (req, res) => {
+const getProductsFromCart = async (req, res) => {
 
     const { cid } = req.params;
     
     if (!cid) res.status(400).json({error: 'Debe ingresar un id'});
 
     try {
-        const products = await carritoManager.getProductsByCarritoId(cid);
+        const products = await cartManager.getProductsByCarritoId(cid);
 
         if (products === CART_NOT_EXIST) return res.status(400).json({ error: CART_NOT_EXIST });
 
@@ -62,7 +66,7 @@ const deleteCarrito = async (req, res) => {
  
     try {
 
-        const result = await carritoManager.deleteCarrito(cid);
+        const result = await cartManager.deleteCarrito(cid);
 
         if (result == GET_CARTS_ERROR) return res.status(400).json({ error: GET_CARTS_ERROR });
     
@@ -76,7 +80,7 @@ const deleteCarrito = async (req, res) => {
 
 export default {
     addCarrito,
-    addProductToCarrito,
-    getProductsCarritoById,
+    addProductToCart,
+    getProductsFromCart,
     deleteCarrito
 };

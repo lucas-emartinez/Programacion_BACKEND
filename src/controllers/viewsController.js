@@ -1,9 +1,7 @@
-import { socketServer }  from '../app.js';
-import { productManager } from '../impl/ProductManager.js';
+import { productManager } from '../dao/db/ProductManager.js';
 
 
 const home = async (req, res) => {
-
     const products = await productManager.getProducts();
 
     return res.render('home', {
@@ -13,12 +11,6 @@ const home = async (req, res) => {
 }
 
 const realTimeProducts = async (req, res) => {
-    
-        const products = await productManager.getProducts();
-
-        socketServer.on('connection', (socket) => {
-            socket.emit('products', products);
-        });
 
         return res.render('realTimeProducts', {
             style: 'realTimeProducts.css'

@@ -1,15 +1,15 @@
 import { Router } from 'express';
 
-import carritoController from '../controllers/carritosController.js';
+import cartsController from '../controllers/cartsController.js';
 
 const router = Router();
 
 router.route("/:cid")
-    .get(carritoController.getProductsCarritoById)
-    .delete(carritoController.deleteCarrito)
+    .get(cartsController.getProductsFromCart)
+    .delete(cartsController.deleteCarrito)
     
-router.post("/", carritoController.addCarrito)
-router.post("/:cid/products/:pid", carritoController.addProductToCarrito)
+router.post("/", cartsController.addCarrito)
+router.post("/:cid/products/:pid", cartsController.addProductToCart)
     
 
 export default router;
