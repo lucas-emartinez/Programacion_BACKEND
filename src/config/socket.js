@@ -1,10 +1,11 @@
 import { Server } from "socket.io";
 import { productManager } from "../dao/db/ProductManager.js";
+import { messageManager } from "../dao/db/MessageManager.js";
 
 const Websocket = (httpServer) => {
 
     const socket = new Server(httpServer);
-    socket.on('connection', (socket) => {
+    socket.on('connection', async (socket) => {
 
         // Mensaje de conexion del socket
         console.log(`Cliente conectado - ID: ${socket.id}`)
@@ -15,20 +16,18 @@ const Websocket = (httpServer) => {
         });
 
         // Obtencion de productos actuales 
-        socket.emit('products', async () => {
-            try {
-                const products = await productManager.findAll();
-                console.log(products)
-                return products;
-            } catch (error) {
-                socket.emit('error', "No se pudo obtener los productos");
-            }
-        });
+        try {
+            const products = await productManager.findAll();
+            socket.emit('products', products);
+        } catch (error) {
+            socket.emit('error', "No se pudieron obtener los productos");
+        }
 
         // Creacion de productos
         socket.on('productCreated', async (product) => {
             try {
                 const newProduct = await productManager.createOne(product);
+                
                 socket.emit('newProduct', newProduct);
             } catch (error) {
                 socket.emit('error', "No se pudo crear el producto");
@@ -45,6 +44,8 @@ const Websocket = (httpServer) => {
             }
         });
 
+    
+
         // Eliminacion de productos
         socket.on('productDeleted', async (product) => {
             try {
@@ -53,6 +54,24 @@ const Websocket = (httpServer) => {
             } catch (error) {
                 socket.emit('error', "No se pudo eliminar el producto");
             }1
+        });
+
+        // Obtencion de mensajes actuales
+        try {
+            const messages = await messageManager.findAll();
+            socket.emit('messages', messages);
+        } catch (error) {
+            socket.emit('error', "No se pudieron obtener los mensajes");
+        }
+        
+        // Nuevo mensaje del chat
+        socket.on('newMessage', async (message) => {
+            try {
+                const newMsg = await messageManager.createOne(message);
+                socket.emit('messageCreated', newMsg);
+            } catch (error) {
+                socket.emit('error', "No se pudo enviar el mensaje");
+            }
         });
     });
     

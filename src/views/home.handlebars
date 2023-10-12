@@ -2,18 +2,32 @@
     <h1>Productos</h1>
     <div class="productsContainer">
         {{#if products}}
-            {{#each products}}
-                <div class="productContainer">
-                    {{#each this.thumbnails}}
-                            <img class="thumbnail" src="{{this}}" alt="product image" />
-                    {{/each}}
-                    <div class="productInfo">
-                        <h2>{{this.title}}</h2>
-                        <p>{{this.description}}</p>
-                        <p>${{this.price}}</p>
-                    </div>
-                </div>
-            {{/each}}
+            
+                <table class="productsTable">
+                    <tr class="productsTableHead">
+                        <th class="titleHead">Titulo</th>
+                        <th class="descriptionHead">Descripcion</th>
+                        <th class="codeHead">Codigo</th>
+                        <th class="categoryHead">Categoria</th>
+                        <th class="stockHead">Stock</th>
+                        <th class="priceHead">Precio</th>
+                        <th class="statusHead">Status</th>
+                    </tr>
+                    <tbody id="productsTableBody">
+                        {{#each products}}
+                            <tr>
+                                <td>{{this.title}}</td>
+                                <td>{{this.description}}</td>
+                                <td>{{this.code}}</td>
+                                <td>{{this.category}}</td>
+                                <td>{{this.stock}}</td>
+                                <td>{{this.price}}</td>
+                                <td>{{this.status}}</td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            
         {{else}}
             <h2 class="noProducts">No hay productos</h2>
         {{/if}}

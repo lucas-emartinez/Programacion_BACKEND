@@ -1,7 +1,6 @@
 // Manager requerido
 import { productManager } from "../dao/db/ProductManager.js";
 import errors from '../config/errors.js';
-import { socketServer } from "../app.js";
 
 
 const {
@@ -44,8 +43,6 @@ const addProduct = async (req, res) => {
         if (result == PRODUCT_MUST_HAVE_TITLE) return res.status(400).json({ error: PRODUCT_MUST_HAVE_TITLE });
         if (result == PRODUCT_MUST_HAVE_POSITIVE_PRICE) return res.status(400).json({ error: PRODUCT_MUST_HAVE_POSITIVE_PRICE });
         if (result == PRODUCT_MUST_HAVE_POSITIVE_STOCK) return res.status(400).json({ error: PRODUCT_MUST_HAVE_POSITIVE_STOCK });
-
-        socketServer.emit('newProduct', result);
 
         return res.status(201).json({ message: result });
 
@@ -103,13 +100,10 @@ const updateProduct = async (req, res) => {
     const product = req.body;
 
     try {
-        const result = await productManager.updateProduct(pid, product);
+        const result = await productManager.updateOne(pid, product);
 
         if (result == PRODUCT_NOT_EXIST) return res.status(404).json({ error: PRODUCT_NOT_EXIST })
         if (result == PRODUCT_CODE_EXIST) return res.status(400).json({ error: PRODUCT_CODE_EXIST })
-
-        socketServer.emit('updateProduct', result)
-    
         return res.status(200).json({ result })   
     } catch (error) {
         return res.status(400).json({ error: error });
@@ -125,9 +119,6 @@ const deleteProduct = async (req, res) => {
     try {
 
         const result = await productManager.deleteProduct(pid);
-
-        socketServer.emit('deleteProduct', {id: pid})
-
         return res.status(204).json({ message: result })
 
     } catch (error) {

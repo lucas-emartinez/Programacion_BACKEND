@@ -1,6 +1,6 @@
 import { cartsModel } from '../models/carts.model.js';
 import { productManager } from './ProductManager.js';
-import BaseManager from './baseManager.js';
+import BaseManager from './BaseManager.js';
 
 
 class CartManager extends BaseManager {

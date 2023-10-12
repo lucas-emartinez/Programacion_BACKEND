@@ -1,5 +1,5 @@
 import { productsModel } from '../models/products.model.js';
-import BaseManager from './baseManager.js';
+import BaseManager from './BaseManager.js';
 
 class ProductManager extends BaseManager{
     constructor() {
@@ -8,3 +8,4 @@ class ProductManager extends BaseManager{
 }
 
 export const productManager = new ProductManager();
+

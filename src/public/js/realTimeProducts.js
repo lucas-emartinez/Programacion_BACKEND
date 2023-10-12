@@ -31,17 +31,17 @@ form.onsubmit = (e) => {
 
 socket.on('products', (data) => {
     const tableBody = document.getElementById("productsTableBody");
-    console.log(data)
     const rows = data.map((product) => {
-        const { id, title, description, price, code, stock } = product;
+        const { title, description, price, code, category, stock, status } = product;
         return `
                 <tr>
-                    <td>${id}</td>
                     <td>${title}</td>
                     <td>${description}</td>
-                    <td>${price}</td>
                     <td>${code}</td>
+                    <td>${category}</td>
                     <td>${stock}</td>
+                    <td>${price}</td>
+                    <td>${status}</td>
                 </tr>`;
       });
       tableBody.innerHTML += rows.join("");
@@ -50,25 +50,24 @@ socket.on('products', (data) => {
 
 socket.on('newProduct', (data) => {
 
-    const product = data; // El objeto de producto recibido del servidor
-    
-    const productsContainer = document.querySelector('.productsContainer');
+    const tableBody = document.getElementById("productsTableBody");
 
-    const productContainer = document.createElement('div');
-    productContainer.classList.add('productContainer');
-    productContainer.setAttribute('data-id', product.id);
+    const { title, description, code, category, stock, price, status } = data;
+    // Crea una nueva fila con los datos del producto
+    const newRow = `
+        <tr>
+            <td>${title}</td>
+            <td>${description}</td>
+            <td>${code}</td>
+            <td>${category}</td>
+            <td>${stock}</td>
+            <td>${price}</td>
+            <td>${status}</td>
+        </tr>`;
 
-    productContainer.innerHTML = `
-        <!-- Contenido del producto -->
-        ${product.thumbnails.map(thumbnail => `<img class="thumbnail" src="${thumbnail}" alt="product image" />`).join('')}
-        <div class="productInfo">
-            <h2>${product.title}</h2>
-            <p>${product.description}</p>
-            <p>$${product.price}</p>
-        </div>
-    `;
+    // Agrega la nueva fila al cuerpo de la tabla
+    tableBody.innerHTML += newRow;
 
-    productsContainer.appendChild(productContainer);
 });
 
 socket.on('updatedProduct', (data) => {

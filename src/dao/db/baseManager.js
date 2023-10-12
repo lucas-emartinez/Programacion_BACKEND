@@ -5,7 +5,7 @@ class BaseManager {
     }
 
     async findAll(){
-        return this.model.find();
+        return this.model.find().lean();
     }
 
     async findById(id){
@@ -17,7 +17,7 @@ class BaseManager {
     }
 
     async updateOne(id, data){
-        return this.model.updateOne({ _id: id }, data);
+        return this.model.findOneAndUpdate({ _id: id }, data);
     }
 
     async deleteOne(id){

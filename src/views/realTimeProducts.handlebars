@@ -1,31 +1,54 @@
 <div>
     <h1>Productos</h1>
     <div class="productsContainer">
-        <div class="productContainer" data-id="{{this.id}}">
-            <table>
-                <tr>
-                    <th>Titulo</th>
-                    <th>Descripcion</th>
-                    <th>Codigo</th>
-                    <th>Categoria</th>
-                    <th>Stock</th>
-                    <th>Precio</th>
+        <div>
+            <table class="productsTable">
+                <tr class="productsTableHead">
+                    <th class="titleHead">Titulo</th>
+                    <th class="descriptionHead">Descripcion</th>
+                    <th class="codeHead">Codigo</th>
+                    <th class="categoryHead">Categoria</th>
+                    <th class="stockHead">Stock</th>
+                    <th class="priceHead">Precio</th>
+                    <th class="statusHead">Status</th>
                 </tr>
                 <tbody id="productsTableBody">
-                    
+
                 </tbody>
+            </table>
+        </div>
+        <div class="addProductForm">
+            <p>Agregue un producto</p>
+            <form class="productsForm" id="productsForm" enctype="multipart/form-data">
+                <div>
+                    <label for="title">Titulo</label>
+                    <input required="true" type="text" id="title" name="title" placeholder="Titulo" />
+                </div>
+                <div>
+                    <label for="description">Descripcion</label>
+                    <input required="true" type="text" id="description" name="description" placeholder="Descripcion" />
+                </div>
+                <div>
+                    <label for="code">Codigo</label>
+                    <input required="true" type="text" id="code" name="code" placeholder="Codigo" />
+                </div>
+                <div>
+                    <label for="code">Categoria</label>
+                    <input required="true" type="text" id="category" name="category" placeholder="Categoria" />
+                </div>
+                <div>
+                    <label for="stock">Stock</label>
+                    <input required="true" type="Number" id="stock" name="stock" placeholder="Stock" />
+                </div>
+                <div>
+                    <label for="price">Precio</label>
+                    <input required="true" type="Number" id="price" name="id" placeholder="Precio" />
+                </div>
+                <button type="submit">Agregar</button>
+            </form>
         </div>
     </div>
-    <form id="productsForm" enctype="multipart/form-data">
-        <input required="true" type="text" id="title" name="title" placeholder="Titulo" />
-        <input required="true" type="text" id="description" name="description" placeholder="Descripcion" />
-        <input required="true" type="text" id="code" name="code" placeholder="Codigo" />
-        <input required="true" type="text" id="category" name="category" placeholder="Categoria" />
-        <input required="true" type="Number" id="stock" name="stock" placeholder="Stock" />
-        <input required="true" type="Number" id="price" name="id" placeholder="Precio" />
 
-        <button type="submit">Agregar</button>
-    </form>
 </div>
 <script src="socket.io/socket.io.js"></script>
 <script src="/js/realTimeProducts.js"></script>

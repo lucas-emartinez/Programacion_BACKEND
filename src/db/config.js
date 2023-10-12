@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const URI = "mongodb+srv://lucasemartinez:DgveGoxDyMjqWHro@cursobackend.kttj3g1.mongodb.net/ecommerce?retryWrites=true&w=majority"
+const URI = //POR CHAT DE CODER
 
 
 mongoose
