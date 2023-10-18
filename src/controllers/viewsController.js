@@ -1,12 +1,12 @@
 import { productManager } from '../dao/db/ProductManager.js';
 
 
-const home = async (req, res) => {
-    const products = await productManager.findAll();
+const products = async (req, res) => {
+    const products = await productManager.findAll(req.query);
 
-    return res.render('home', {
+    return res.render('products', {
         products,
-        style: 'home.css'
+        style: 'products.css'
     });
 }
 
@@ -23,7 +23,7 @@ const realTimeProducts = async (req, res) => {
 }
 
 export default {
-    home,
+    products,
     realTimeProducts,
     realTimeChat
 }

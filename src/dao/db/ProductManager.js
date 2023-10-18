@@ -11,26 +11,58 @@ class ProductManager extends BaseManager{
         super(productsModel);
     }
 
-    async findAll(query, opts) {
-        try {
-            
+    async findAll(options) {
+        const {
+            limit,
+            page,
+            sort,
+            upperPrice,
+            lowerPrice,
+            category,
+            inStock
+        } = options;
+
+        // Opciones a pasarle al paginate
+        const opts = {
+            limit: limit ? limit : 10,
+            page: page ? page : 1,
+            sort: (sort === 'asc' || sort === 'desc') ? {price: sort == 'asc' ? 1 : -1 }: null,
+        }
+        
+        // Filtro a pasarle al paginate
+        const query = {
+                category: category ? { $eq: category } : {$exists: true},
+                price: {
+                    $gte: lowerPrice || 0, 
+                    $lte: upperPrice || Infinity 
+                  },
+                stock: (inStock==='true') ? { $gt: 0 } : {$exists: true},
+        }
+        
+        try {            
             const result = await this.model.paginate(query, opts);
-            
             const info = {
-                count: result.totalDocs,
-                pages: result.totalPages,
-                prev: result.prevPage 
-                    ? `http://localhost:8080/api/products?page=${result.prevPage}` 
-                    : null,
-                next: result.nextPage 
-                    ? `http://localhost:8080/api/products?page=${result.nextPage}` 
-                    : null,
+                status: 'success',
+                payload: result.docs,
+                totalPages: result.totalPages,
+                prevPage: result.prevPage,
+                nextPage: result.nextPage,
+                page: result.page,
+                hasPrevPage: result.hasPrevPage,
+                hasNextPage: result.hasNextPage,
+                prevLink: result.prevPage ? 
+                `http://localhost:8080/api/products?page=${result.prevPage}&limit=${opts.limit}` : null,
+                nextLink: result.nextPage ? 
+                `http://localhost:8080/api/products?page=${result.nextPage}&limit=${opts.limit}` : null,
             }
-                    
-            return {result, info};
+           
+            return info;
 
         } catch (error) {
-            return error;
+            return {
+                status: 'error',
+                error: GET_PRODUCTS_ERROR
+            };
         }
     }
 }

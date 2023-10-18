@@ -5,11 +5,12 @@ import errors from "../config/errors.js";
 const {
     CART_NOT_EXIST,
     PRODUCT_TO_ADD_NOT_EXIST,
-    GET_CARTS_ERROR
+    GET_CARTS_ERROR,
+    PRODUCT_TO_DELETE_NOT_EXIST
 } = errors;
 
 const getCarts = async (req, res) => {
-    const {limit, page, sort, productQuantity} = req.query;
+    const {limit, page, sort } = req.query;
     const opts = { 
         limit: limit ? limit : 10, 
         page: page ? page: 1,
@@ -45,7 +46,7 @@ const addProductToCart = async (req, res) => {
         if ( result == CART_NOT_EXIST) return res.status(400).json({ error: CART_NOT_EXIST });
         if ( result == PRODUCT_TO_ADD_NOT_EXIST) return res.status(400).json({ error: PRODUCT_TO_ADD_NOT_EXIST });
         
-        return res.status(201).json({ message: result });
+        return res.status(201).json(result);
 
     } catch (error) {
         return res.status(400).json({ error: error });
@@ -89,11 +90,69 @@ const deleteCarrito = async (req, res) => {
     }
 }; 
 
+const updateProductQuantity = async (req, res) => {
+    const { cid, pid } = req.params;
+    const { quantity } = req.body;
+
+    if (!cid || !pid) res.status(400).json({error: 'Debe ingresar un id'});
+
+    try {
+        const result = await cartManager.updateProductQuantity(cid, pid, quantity);
+
+        if (result == CART_NOT_EXIST) return res.status(400).json({ error: CART_NOT_EXIST });
+        if (result == PRODUCT_TO_DELETE_NOT_EXIST) return res.status(400).json({ error: PRODUCT_TO_DELETE_NOT_EXIST });
+        
+        return res.status(201).json(result);
+
+    } catch (error) {
+        return res.status(400).json({ error: error });
+    }
+}
+
+const deleteAllProductsFromCart = async (req, res) => {
+    const { cid } = req.params;
+
+    if (!cid) res.status(400).json({error: 'Debe ingresar un id'});
+
+    try {
+        const result = await cartManager.deleteAllProductsFromCart(cid);
+
+        if (result == CART_NOT_EXIST) return res.status(400).json({ error: CART_NOT_EXIST });
+        
+        return res.status(201).json(result);
+
+    } catch (error) {
+        return res.status(400).json({ error: error });
+    }
+}
+
+const deleteProductFromCart = async (req, res) => {
+
+    const { cid, pid } = req.params;
+
+    if (!cid || !pid) res.status(400).json({error: 'Debe ingresar un id'});
+
+    try {
+        const result = await cartManager.deleteProductFromCart(cid, pid);
+
+        if (result == CART_NOT_EXIST) return res.status(400).json({ error: CART_NOT_EXIST });
+        if (result == PRODUCT_TO_DELETE_NOT_EXIST) return res.status(400).json({ error: PRODUCT_TO_DELETE_NOT_EXIST });
+        
+        return res.status(201).json(result);
+
+    } catch (error) {
+        return res.status(400).json({ error: error });
+    }
+}
+
 
 export default {
     getCarts,
     addCarrito,
     addProductToCart,
     getProductsFromCart,
-    deleteCarrito
+    updateProductQuantity,
+    deleteCarrito,
+    deleteAllProductsFromCart,
+    deleteProductFromCart
 };

@@ -15,42 +15,65 @@ class CartManager extends BaseManager {
         super(cartsModel)
     }        
 
-    async findAll(opts) {
-        try {
-            const info
-            
-            const result = await this.model.paginate({}, opts);
-            return result;
-        } catch (error) {
-            return GET_CARTS_ERROR;
-        }
-    }
-
     async addProductToCart(cartId, productId) {
         try {
             const cart = await this.model.findById(cartId);
+            
             if (!cart) return CART_NOT_EXIST;
 
             const product = await productManager.findById(productId);
             if (!product) return PRODUCT_NOT_EXIST;
 
-            const productExist = cart.products && cart.products.find(p => p.id == productId);
-
+            const productExist = cart.products && cart.products.find(p => p.product._id == productId);
+            
             if (productExist) {
                 productExist.quantity += 1;
             } else {
-                const product = {
-                    id: productId,
-                    quantity: 1
-                }
-                cart.products.push(product);
+                cart.products.push({product: product._id, quantity: 1});
             }
 
-            await cart.save();
+            const result = await cartManager.updateOne(cartId, cart);
             
-            return cart;
+            return result;
         } catch (error) {
             return `Error al añadir el producto al carrito: ${error}`;
+        }
+    }
+
+    async updateProductQuantity(cartId, productId, quantity) {
+        try {
+            const cart = await this.model.findById(cartId);
+            if (!cart) return CART_NOT_EXIST;
+
+            const product = cart.products.find(p => p.product._id == productId);
+            if (!product) return PRODUCT_NOT_EXIST;
+
+            if (quantity === 0) {
+                return await this.deleteProductFromCart(cartId, productId);
+            } else{
+                product.quantity = quantity;
+            }
+
+            const result = await cart.save();
+
+            return result;
+        } catch (error) {
+            return `Error al actualizar la cantidad del producto en el carrito`;
+        }
+    }
+
+    async deleteAllProductsFromCart(cartId) {
+        try {
+            const cart = await this.model.findById(cartId);
+            if (!cart) return CART_NOT_EXIST;
+
+            cart.products = [];
+
+            const result = await cart.save();
+
+            return result;
+        } catch (error) {
+            return `Error al eliminar todos los productos del carrito`;
         }
     }
 
@@ -73,14 +96,14 @@ class CartManager extends BaseManager {
             const cart = await this.model.findById(cartId);
             if (!cart) return CART_NOT_EXIST;
 
-            const product = cart.products.find(p => p.id == productId);
+            const product = cart.products.find(p => p.product._id == productId);
             if (!product) return PRODUCT_TO_DELETE_NOT_EXIST;
 
-            cart.products = cart.products.filter(p => p.id != productId);
+            cart.products = cart.products.filter(p => p.product._id != productId);
 
-            await cart.save();
+            const result = await cart.save(cart);
 
-            return cart;
+            return result;
         } catch (error) {
             return `Error al eliminar el producto del carrito`;
         }

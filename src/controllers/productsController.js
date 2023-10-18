@@ -55,41 +55,15 @@ const addProduct = async (req, res) => {
 const getProducts = async (req, res) => {
 
     try {
-        
-        const {
-            limit: queryLimit,
-            page,
-            sort,
-            upperPrice,
-            lowerPrice,
-            category,
-        } = req.query;
 
-        // Opciones a pasarle al paginate
-        const opts = {
-            limit: queryLimit ? queryLimit : 10,
-            page: page ? page : 1,
-            sort: (sort == 'asc' || sort == 'desc') && sort == 'asc' ? 1 : -1,
-        }
-        
-        // Filtro a pasarle al paginate
-        const query = {
-                category: category ? { $eq: category } : {$exists: true},
-                price: {
-                    $gte: lowerPrice || 0, 
-                    $lte: upperPrice || Infinity 
-                  }
-        }
+        const result = await productManager.findAll(req.query);
 
-        const products = await productManager.findAll(query, opts);
-
-
-        return res.status(200).json(products);
-
+        return res.status(200).json(result);
     } catch (error) {
-        return res.status(400).json({ error: error });
+        return res.status(400).json({ 
+            status: 'error'
+         });
     }
-
 };
 
 const getProductById = async (req, res) => {
@@ -99,7 +73,7 @@ const getProductById = async (req, res) => {
 
     try {
 
-        const product = await productManager.getProductById(pid);
+        const product = await productManager.findById(pid);
 
         if (product == PRODUCT_NOT_EXIST) return res.status(404).json({ error: PRODUCT_NOT_EXIST })
 
@@ -108,7 +82,6 @@ const getProductById = async (req, res) => {
     } catch (error) {
         return res.status(400).json({ error: error });
     }
-
 };
 
 const updateProduct = async (req, res) => {

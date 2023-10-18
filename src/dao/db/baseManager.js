@@ -26,7 +26,7 @@ class BaseManager {
 
     // Metodo para actualizar un elemento
     async updateOne(id, data){
-        return await this.model.findOneAndUpdate({ _id: id }, data);
+        return await this.model.findOneAndUpdate({ _id: id }, data, { new: true });
     }
 
     // Metodo para eliminar un elemento

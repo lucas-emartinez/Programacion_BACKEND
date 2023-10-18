@@ -9,8 +9,11 @@ router.route("/")
     .post(cartsController.addCarrito)
 router.route("/:cid")
     .get(cartsController.getProductsFromCart)
-    .delete(cartsController.deleteCarrito)
-router.post("/:cid/products/:pid", cartsController.addProductToCart)
+    .delete(cartsController.deleteAllProductsFromCart)
+router.route("/:cid/products/:pid")
+    .put(cartsController.updateProductQuantity)
+    .post(cartsController.addProductToCart)
+    .delete(cartsController.deleteProductFromCart)
     
 
 export default router;

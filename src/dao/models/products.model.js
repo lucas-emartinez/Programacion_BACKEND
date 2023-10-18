@@ -1,8 +1,7 @@
-import { query } from "express";
 import  { Schema, model } from "mongoose";
 import mongoosePaginate from 'mongoose-paginate-v2';
 
-const productsSchema = new Schema({
+const productsSchema = Schema({
 
     title: {
         type: String,
