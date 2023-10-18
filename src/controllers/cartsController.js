@@ -8,15 +8,27 @@ const {
     GET_CARTS_ERROR
 } = errors;
 
+const getCarts = async (req, res) => {
+    const {limit, page, sort, productQuantity} = req.query;
+    const opts = { 
+        limit: limit ? limit : 10, 
+        page: page ? page: 1,
+        sort: sort ? {_id: sort } : { _id: -1 },
+    }
+
+    try {
+        const carts = await cartManager.findAll(opts);
+    
+        return res.status(200).json(carts);
+    } catch (error) {
+        return res.status(400).json({ error: error });
+    }
+};
 
 const addCarrito = async (req, res) => {
     try {
-
-        const product = req.body;
-        const result = await cartManager.addCarrito(product);
-
-        return res.status(201).json({ message: result });
-
+        const result = await cartManager.createOne({});
+        return res.status(201).json(result);
     } catch (error) {
         return res.status(400).json({ error: error });
     }
@@ -47,7 +59,7 @@ const getProductsFromCart = async (req, res) => {
     if (!cid) res.status(400).json({error: 'Debe ingresar un id'});
 
     try {
-        const products = await cartManager.getProductsByCarritoId(cid);
+        const products = await cartManager.getProductsByCartId(cid);
 
         if (products === CART_NOT_EXIST) return res.status(400).json({ error: CART_NOT_EXIST });
 
@@ -79,6 +91,7 @@ const deleteCarrito = async (req, res) => {
 
 
 export default {
+    getCarts,
     addCarrito,
     addProductToCart,
     getProductsFromCart,
