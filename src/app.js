@@ -2,13 +2,12 @@ import express from "express";
 import WebSocketServer from "./config/socket.js";
 import handlebars from "express-handlebars"
 import __dirname from "./utils.js";
+import "./db/config.js"
 
 // Rutas
 import viewsRouter from './routes/views.route.js'
 import productsRouter from './routes/products.route.js'
 import cartsRouter from './routes/carts.route.js'
-
-
 
 // Inicializacion de Express
 const app = express();

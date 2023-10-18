@@ -1,5 +1,5 @@
 // Manager requerido
-import { carritoManager }  from "../impl/CarritoManager.js";
+import { cartManager } from "../dao/db/CartManager.js";
 import errors from "../config/errors.js";
 
 const {
@@ -8,23 +8,39 @@ const {
     GET_CARTS_ERROR
 } = errors;
 
+const getCarts = async (req, res) => {
+    const {limit, page, sort, productQuantity} = req.query;
+    const opts = { 
+        limit: limit ? limit : 10, 
+        page: page ? page: 1,
+        sort: sort ? {_id: sort } : { _id: -1 },
+    }
 
-const addCarrito = async (req, res) => {
     try {
-        const result = await carritoManager.addCarrito();
-        return res.status(201).json({ message: result });
+        const carts = await cartManager.findAll(opts);
+    
+        return res.status(200).json(carts);
     } catch (error) {
         return res.status(400).json({ error: error });
     }
 };
 
-const addProductToCarrito = async (req, res) => {
+const addCarrito = async (req, res) => {
+    try {
+        const result = await cartManager.createOne({});
+        return res.status(201).json(result);
+    } catch (error) {
+        return res.status(400).json({ error: error });
+    }
+};
+
+const addProductToCart = async (req, res) => {
     const { cid, pid } = req.params;
 
     if (!cid || !pid) res.status(400).json({error: 'Debe ingresar un id'});
 
     try {
-        const result = await carritoManager.addProductToCarrito(cid, pid);
+        const result = await cartManager.addProductToCart(cid, pid);
 
         if ( result == CART_NOT_EXIST) return res.status(400).json({ error: CART_NOT_EXIST });
         if ( result == PRODUCT_TO_ADD_NOT_EXIST) return res.status(400).json({ error: PRODUCT_TO_ADD_NOT_EXIST });
@@ -36,14 +52,14 @@ const addProductToCarrito = async (req, res) => {
     }
 };
 
-const getProductsCarritoById = async (req, res) => {
+const getProductsFromCart = async (req, res) => {
 
     const { cid } = req.params;
     
     if (!cid) res.status(400).json({error: 'Debe ingresar un id'});
 
     try {
-        const products = await carritoManager.getProductsByCarritoId(cid);
+        const products = await cartManager.getProductsByCartId(cid);
 
         if (products === CART_NOT_EXIST) return res.status(400).json({ error: CART_NOT_EXIST });
 
@@ -62,7 +78,7 @@ const deleteCarrito = async (req, res) => {
  
     try {
 
-        const result = await carritoManager.deleteCarrito(cid);
+        const result = await cartManager.deleteCarrito(cid);
 
         if (result == GET_CARTS_ERROR) return res.status(400).json({ error: GET_CARTS_ERROR });
     
@@ -75,8 +91,9 @@ const deleteCarrito = async (req, res) => {
 
 
 export default {
+    getCarts,
     addCarrito,
-    addProductToCarrito,
-    getProductsCarritoById,
+    addProductToCart,
+    getProductsFromCart,
     deleteCarrito
 };

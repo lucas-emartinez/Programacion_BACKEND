@@ -1,7 +1,6 @@
 // Manager requerido
-import { productManager } from "../impl/ProductManager.js";
+import { productManager } from "../dao/db/ProductManager.js";
 import errors from '../config/errors.js';
-import { socketServer } from "../app.js";
 
 
 const {
@@ -20,7 +19,7 @@ const {
 
 const addProduct = async (req, res) => {
     const product = req.body;
-    const files = req.files;
+    const file = req.file;
 
     if (files) {
         const images = files.map((file) => {
@@ -34,7 +33,7 @@ const addProduct = async (req, res) => {
     try {
 
         const result = await productManager.addProduct(product);
-        
+
         if (result == PRODUCT_CODE_EXIST) return res.status(400).json({ error: PRODUCT_CODE_EXIST });
         if (result == PRODUCT_MUST_HAVE_CATEGORY) return res.status(400).json({ error: PRODUCT_MUST_HAVE_CATEGORY });
         if (result == PRODUCT_MUST_HAVE_CODE) return res.status(400).json({ error: PRODUCT_MUST_HAVE_CODE });
@@ -44,8 +43,6 @@ const addProduct = async (req, res) => {
         if (result == PRODUCT_MUST_HAVE_TITLE) return res.status(400).json({ error: PRODUCT_MUST_HAVE_TITLE });
         if (result == PRODUCT_MUST_HAVE_POSITIVE_PRICE) return res.status(400).json({ error: PRODUCT_MUST_HAVE_POSITIVE_PRICE });
         if (result == PRODUCT_MUST_HAVE_POSITIVE_STOCK) return res.status(400).json({ error: PRODUCT_MUST_HAVE_POSITIVE_STOCK });
-
-        socketServer.emit('newProduct', result);
 
         return res.status(201).json({ message: result });
 
@@ -58,17 +55,36 @@ const addProduct = async (req, res) => {
 const getProducts = async (req, res) => {
 
     try {
+        
+        const {
+            limit: queryLimit,
+            page,
+            sort,
+            upperPrice,
+            lowerPrice,
+            category,
+        } = req.query;
 
-        let products = await productManager.getProducts();
-
-        const { limit } = req.query;
-
-        if (limit) {
-            products = products.slice(0, limit);
-            return res.status(200).json({ products });
-        } else {
-            return res.status(200).json({ products });
+        // Opciones a pasarle al paginate
+        const opts = {
+            limit: queryLimit ? queryLimit : 10,
+            page: page ? page : 1,
+            sort: (sort == 'asc' || sort == 'desc') && sort == 'asc' ? 1 : -1,
         }
+        
+        // Filtro a pasarle al paginate
+        const query = {
+                category: category ? { $eq: category } : {$exists: true},
+                price: {
+                    $gte: lowerPrice || 0, 
+                    $lte: upperPrice || Infinity 
+                  }
+        }
+
+        const products = await productManager.findAll(query, opts);
+
+
+        return res.status(200).json(products);
 
     } catch (error) {
         return res.status(400).json({ error: error });
@@ -88,11 +104,11 @@ const getProductById = async (req, res) => {
         if (product == PRODUCT_NOT_EXIST) return res.status(404).json({ error: PRODUCT_NOT_EXIST })
 
         return res.status(200).json({ product })
-    
+
     } catch (error) {
         return res.status(400).json({ error: error });
     }
-    
+
 };
 
 const updateProduct = async (req, res) => {
@@ -103,14 +119,11 @@ const updateProduct = async (req, res) => {
     const product = req.body;
 
     try {
-        const result = await productManager.updateProduct(pid, product);
+        const result = await productManager.updateOne(pid, product);
 
         if (result == PRODUCT_NOT_EXIST) return res.status(404).json({ error: PRODUCT_NOT_EXIST })
         if (result == PRODUCT_CODE_EXIST) return res.status(400).json({ error: PRODUCT_CODE_EXIST })
-
-        socketServer.emit('updateProduct', result)
-    
-        return res.status(200).json({ result })   
+        return res.status(200).json({ result })
     } catch (error) {
         return res.status(400).json({ error: error });
     }
@@ -124,10 +137,7 @@ const deleteProduct = async (req, res) => {
 
     try {
 
-        const result = await productManager.deleteProduct(pid);
-
-        socketServer.emit('deleteProduct', {id: pid})
-
+        const result = await productManager.deleteOne(pid);
         return res.status(204).json({ message: result })
 
     } catch (error) {

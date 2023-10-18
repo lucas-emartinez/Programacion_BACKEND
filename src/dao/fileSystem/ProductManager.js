@@ -159,7 +159,6 @@ class ProductManager {
             return `Error al eliminar el producto: ${error}`;
         }
     }
-
 }
 
 export const productManager = new ProductManager(path.resolve(__dirname,  "db/products.json"));

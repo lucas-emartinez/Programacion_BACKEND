@@ -1,4 +1,5 @@
 const errors = {
+    PRODUCTS_NOT_EXIST: 'No hay productos',
     CART_NOT_EXIST: 'El carrito no existe',
     PRODUCT_TO_ADD_NOT_EXIST: 'El producto que intenta añadir no existe',
     PRODUCT_NOT_EXIST: 'El producto que busca no existe',
