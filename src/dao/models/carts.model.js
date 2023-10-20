@@ -2,23 +2,23 @@ import { model, Schema } from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 const cartsSchema = Schema({
-    products: {
-        type: [
-            {
-                product: {
-                    type: Schema.Types.ObjectId,
-                    ref: 'Products',
-                    required: true
-                },
-                quantity: {
-                    type: Number,
-                    required: true
-                }
+    products: [
+        {
+            product: {
+                type: Schema.Types.ObjectId,
+                ref: 'Products',
+                required: true
+            },
+            quantity: {
+                type: Number,
+                required: true
+            }
         }
     ],
-        // No es necesario especificar `default: []` ya que por defecto será un array vacío.
-    },
-});
+    // No es necesario especificar `default: []` ya que por defecto será un array vacío.
+},
+    { timestamps: true }
+);
 
 // Middleware para población de 'products.product'
 cartsSchema.pre(['find', 'findOne', 'findOneAndUpdate', 'findById'], function () {

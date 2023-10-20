@@ -30,8 +30,9 @@ form.onsubmit = (e) => {
 
 
 socket.on('products', (data) => {
+
     const tableBody = document.getElementById("productsTableBody");
-    const rows = data.map((product) => {
+    const rows = data.payload.map((product) => {
         const { title, description, price, code, category, stock, status } = product;
         return `
                 <tr>

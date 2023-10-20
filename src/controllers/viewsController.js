@@ -1,12 +1,26 @@
 import { productManager } from '../dao/db/ProductManager.js';
+import { cartManager } from '../dao/db/CartManager.js';
 
-
-const products = async (req, res) => {
-    const products = await productManager.findAll(req.query);
-
+const products = async (req, res) => {    
+    const cart = await cartManager.createOne();
+    const result = await productManager.findAll(req.query);
+    
     return res.render('products', {
-        products,
+        cart: cart._id,
+        prevPage: result.hasPrevPage ? result.page - 1 : null,
+        page: result.page,
+        nextPage: result.hasNextPage ? result.page + 1 : null,
+        products: result.payload,
         style: 'products.css'
+    });
+}
+
+const carts = async (req, res) => {
+    const cartId = req.params.cid;
+    const cart = await cartManager.findById(cartId);
+    return res.render('carts', {
+        products: cart.products,
+        style: 'cart.css'
     });
 }
 
@@ -23,6 +37,7 @@ const realTimeProducts = async (req, res) => {
 }
 
 export default {
+    carts,
     products,
     realTimeProducts,
     realTimeChat

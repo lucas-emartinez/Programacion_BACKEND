@@ -41,10 +41,10 @@ socket.on('messages', (messages) => {
                 `;
     });
     messageLog.innerHTML += rows.join("");
+
 })
 
 socket.on('messageCreated', (data) => {
-    console.log(data)
     const messageLog = document.getElementById('messageLog');
     const row = `
                     <div>
@@ -53,4 +53,5 @@ socket.on('messageCreated', (data) => {
                 `;
 
     messageLog.innerHTML += row;
+
 });

@@ -11,6 +11,8 @@ class ProductManager extends BaseManager{
         super(productsModel);
     }
 
+
+    // Implementacion de metodo abstracto
     async findAll(options) {
         const {
             limit,
@@ -40,10 +42,12 @@ class ProductManager extends BaseManager{
         }
         
         try {            
-            const result = await this.model.paginate(query, opts);
+            // Verificamos si existe query y options, en caso contrario buscamos todos los productos
+            const result = await this.model.paginate(query ? query : {}, opts ? opts : {});
+            
             const info = {
                 status: 'success',
-                payload: result.docs,
+                payload: result.docs.map(doc => doc.toObject()), // Ya que mongoose-paginate-v2 no admite LEAN().
                 totalPages: result.totalPages,
                 prevPage: result.prevPage,
                 nextPage: result.nextPage,
@@ -55,7 +59,8 @@ class ProductManager extends BaseManager{
                 nextLink: result.nextPage ? 
                 `http://localhost:8080/api/products?page=${result.nextPage}&limit=${opts.limit}` : null,
             }
-           
+            
+            
             return info;
 
         } catch (error) {

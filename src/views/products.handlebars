@@ -1,35 +1,56 @@
 <div>
-    <h1>Productos</h1>
+
     <div class="productsContainer">
+        <div class="head">
+            <h1>Productos</h1>
+            <div id="cart" data-cart="{{cart}}">
+                <a href="/carts/{{cart}}">Ir al Carrito </a>
+            </div>
+        </div>
+        <div id="addProductResponse"></div>
         {{#if products}}
-            
-                <table class="productsTable">
-                    <tr class="productsTableHead">
-                        <th class="titleHead">Titulo</th>
-                        <th class="descriptionHead">Descripcion</th>
-                        <th class="codeHead">Codigo</th>
-                        <th class="categoryHead">Categoria</th>
-                        <th class="stockHead">Stock</th>
-                        <th class="priceHead">Precio</th>
-                        <th class="statusHead">Status</th>
-                    </tr>
-                    <tbody id="productsTableBody">
-                        {{#each products}}
-                            <tr>
-                                <td>{{this.title}}</td>
-                                <td>{{this.description}}</td>
-                                <td>{{this.code}}</td>
-                                <td>{{this.category}}</td>
-                                <td>{{this.stock}}</td>
-                                <td>{{this.price}}</td>
-                                <td>{{this.status}}</td>
-                            </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
-            
+
+        <table class="productsTable">
+            <tr class="productsTableHead">
+                <th class="titleHead">Titulo</th>
+                <th class="descriptionHead">Descripcion</th>
+                <th class="codeHead">Codigo</th>
+                <th class="categoryHead">Categoria</th>
+                <th class="stockHead">Stock</th>
+                <th class="priceHead">Precio</th>
+                <th class="statusHead">Status</th>
+                <th class="statusHead">Agregar al carrito</th>
+            </tr>
+            <tbody id="productsTableBody">
+                {{#each products}}
+                <tr>
+                    <td>{{this.title}}</td>
+                    <td>{{this.description}}</td>
+                    <td>{{this.code}}</td>
+                    <td>{{this.category}}</td>
+                    <td>{{this.stock}}</td>
+                    <td>{{this.price}}</td>
+                    <td>{{this.status}}</td>
+                    <td>
+                        <button class="addButton" data-id="{{this._id}}">+</button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <div class="pageNumbers">
+            {{#if prevPage}}
+            <a href="/products?page={{this.prevPage}}">Anterior</a>
+            {{/if}}
+            {{#each pages}}
+            <a href="{{this}}">{{this}}</a>
+            {{/each}}
+            {{#if nextPage}}
+            <a href="/products?page={{this.nextPage}}">Siguiente</a>
+            {{/if}}
+        </div>
         {{else}}
-            <h2 class="noProducts">No hay productos</h2>
+        <h2 class="noProducts">No hay productos</h2>
         {{/if}}
     </div>
 </div>

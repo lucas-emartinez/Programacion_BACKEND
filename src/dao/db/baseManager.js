@@ -10,13 +10,13 @@ class BaseManager {
     // Recibe un objeto con las opciones de paginacion
 
     // Metodo abstracto ya que difiere la ruta en los nextPage y prevPage
-    async findAll(opts){
+    async findAll(){
        throw new Error('Metodo no implementado, lo deben implementar las clases hijas');
     }
 
     // Metodo de busqueda de un elemento por id
     async findById(id){
-        return await this.model.findById(id);
+        return await this.model.findById(id).lean();
     }
 
     // Metodo para crear un elemento

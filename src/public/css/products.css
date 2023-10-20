@@ -30,3 +30,21 @@ tr:hover {
     background-color: #f5f5f5;
     border: 1px solid black;
 }
+
+.pageNumbers {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.addButton {
+    width: 100%;
+}
+
+.head{
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    align-items: center;
+}
