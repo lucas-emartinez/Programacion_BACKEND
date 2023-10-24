@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Esta función se ejecuta cuando el DOM está completamente cargado
 
+
     const showMessage = (message) => {
         
         onAddResponse.innerHTML = message;

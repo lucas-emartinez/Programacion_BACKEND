@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const URI = //PEGAR URI DE MONGO
+const URI = process.env.MONGO_URI
 
 
 mongoose

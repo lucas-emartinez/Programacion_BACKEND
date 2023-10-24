@@ -1,7 +1,7 @@
 import uploader from '../multer.js';
 import { Router } from 'express';
 
-import productsController from '../controllers/productsController.js';
+import productsController from '../controllers/products.controller.js';
 
 const router = Router();
 

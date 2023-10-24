@@ -25,8 +25,8 @@ cartsSchema.pre(['find', 'findOne', 'findOneAndUpdate', 'findById'], function ()
     this.populate('products.product');
 });
 
+// Middleware para paginación
 cartsSchema.plugin(mongoosePaginate)
-
 
 
 export const cartsModel = model('Carts', cartsSchema);

@@ -40,6 +40,15 @@ class CartManager extends BaseManager {
         }
     }
 
+    async updateCart(cartId, cart) {
+        try {
+            const result = await this.model.findByIdAndUpdate(cartId, cart);
+            return result;
+        } catch (error) {
+            return `Error al actualizar el carrito: ${error}`;
+        }
+    }
+
     async updateProductQuantity(cartId, productId, quantity) {
         try {
             const cart = await this.model.findById(cartId);

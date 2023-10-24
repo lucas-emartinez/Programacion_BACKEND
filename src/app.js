@@ -1,13 +1,16 @@
 import express from "express";
-import WebSocketServer from "./config/socket.js";
+import session from "express-session";
+import Websocket from "./config/socket.js";
+import cookieParser from "cookie-parser";
 import handlebars from "express-handlebars"
 import __dirname from "./utils.js";
 import "./db/config.js"
 
 // Rutas
-import viewsRouter from './routes/views.route.js'
-import productsRouter from './routes/products.route.js'
-import cartsRouter from './routes/carts.route.js'
+import loginRouter from './routes/login.routes.js'
+import viewsRouter from './routes/views.routes.js'
+import productsRouter from './routes/products.routes.js'
+import cartsRouter from './routes/carts.routes.js'
 
 // Inicializacion de Express
 const app = express();
@@ -25,12 +28,17 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 
 // Middlewares
+const secret = "123456" // Solo para TESTING. Luego pasaremos esto a una variable de entorno ,env
+app.use(cookieParser(secret));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 
+
 // Endpoints
 app.use('/', viewsRouter)
+app.use('/login', loginRouter)
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsRouter)
 
@@ -40,4 +48,4 @@ const httpServer = app.listen(PORT, () => {
 });
 
 // Websocket
-export const socketServer = WebSocketServer(httpServer);
+export const socketServer = Websocket(httpServer);

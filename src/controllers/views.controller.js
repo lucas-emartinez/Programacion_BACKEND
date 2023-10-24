@@ -1,6 +1,13 @@
 import { productManager } from '../dao/db/ProductManager.js';
 import { cartManager } from '../dao/db/CartManager.js';
 
+
+const login = async (req, res) => {
+   return res.render('login', {
+        style: 'login.css'
+   });
+};
+
 const products = async (req, res) => {    
     const cart = await cartManager.createOne();
     const result = await productManager.findAll(req.query);
@@ -31,12 +38,13 @@ const realTimeChat = async (req, res) => {
 }
 
 const realTimeProducts = async (req, res) => {
-    return res.render('realTimeProducts', {
+        return res.render('realTimeProducts', {
         style: 'realTimeProducts.css'
     });
 }
 
 export default {
+    login,
     carts,
     products,
     realTimeProducts,

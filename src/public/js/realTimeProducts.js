@@ -1,4 +1,4 @@
-const socket = io();
+const socket = io('/products');
 
 const form = document.getElementById("productsForm");
 const title = document.getElementById("title");
