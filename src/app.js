@@ -1,16 +1,21 @@
 import express from "express";
 import session from "express-session";
+import FileStore from "session-file-store";
 import Websocket from "./config/socket.js";
 import cookieParser from "cookie-parser";
+import MongoStore from "connect-mongo";
 import handlebars from "express-handlebars"
-import __dirname from "./utils.js";
+import { __dirname } from "./utils.js";
 import "./db/config.js"
 
 // Rutas
-import loginRouter from './routes/login.routes.js'
+import usersRouter from './routes/users.routes.js'
 import viewsRouter from './routes/views.routes.js'
 import productsRouter from './routes/products.routes.js'
 import cartsRouter from './routes/carts.routes.js'
+import { URI } from "./db/config.js";
+import verifySession from "./middlewares/verifySession.js";
+
 
 // Inicializacion de Express
 const app = express();
@@ -27,20 +32,34 @@ app.set("views", __dirname + "/views");
 // Indicamos el motor de plantillas a utilizar
 app.set("view engine", "handlebars");
 
+// FyleSystem sessions
+const fileStore = FileStore(session);
+
 // Middlewares
 const secret = "123456" // Solo para TESTING. Luego pasaremos esto a una variable de entorno ,env
 app.use(cookieParser(secret));
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
-
+app.use(session(
+    {
+        secret: "SESSION_SECRET_KEY",
+        cookie: {
+            maxAge: 60 * 60 * 1000 // 1 hora
+        },
+        store: new MongoStore(
+            {
+                mongoUrl: URI,
+            }
+        ),
+    }
+));
 
 // Endpoints
 app.use('/', viewsRouter)
-app.use('/login', loginRouter)
+app.use('/api/users', usersRouter) // Ruteo de login y signup
 app.use('/api/products', productsRouter)
-app.use('/api/carts', cartsRouter)
+app.use('/api/carts', verifySession, cartsRouter)
 
 // Servidor 
 const httpServer = app.listen(PORT, () => {

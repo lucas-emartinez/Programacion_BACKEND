@@ -1,13 +1,27 @@
-<div class="container">
-    <form action="/login" method="post">
-        <div class="form-group">
-            <label for="name">Nombre</label>
-            <input type="text" id="name" name="name" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <button type="submit">Iniciar Sesión</button>
-    </form>
+<div class="background">
+    <div class="container">
+        <form onsubmit="handleLogin(event)">
+             <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <p>¿No tenés una cuenta? <a class="signup-link" href="/signup">Registrate!</a></p>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
 </div>
+
+<style>
+    
+</style>
+
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="/js/login.js"></script>
+

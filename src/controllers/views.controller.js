@@ -8,12 +8,18 @@ const login = async (req, res) => {
    });
 };
 
+const signup = async (req, res) => {
+    return res.render('signup', {
+        style: 'signup.css'
+   });
+}
+
 const products = async (req, res) => {    
-    const cart = await cartManager.createOne();
+    const cart = req.session.cart;
     const result = await productManager.findAll(req.query);
     
     return res.render('products', {
-        cart: cart._id,
+        cart: cart,
         prevPage: result.hasPrevPage ? result.page - 1 : null,
         page: result.page,
         nextPage: result.hasNextPage ? result.page + 1 : null,
@@ -27,7 +33,7 @@ const carts = async (req, res) => {
     const cart = await cartManager.findById(cartId);
     return res.render('carts', {
         products: cart.products,
-        style: 'cart.css'
+        style: 'carts.css'
     });
 }
 
@@ -38,13 +44,17 @@ const realTimeChat = async (req, res) => {
 }
 
 const realTimeProducts = async (req, res) => {
+    if(req.session.isAdmin) {
         return res.render('realTimeProducts', {
-        style: 'realTimeProducts.css'
-    });
+            style: 'realTimeProducts.css'
+        });
+    }
+    return res.redirect('/products');
 }
 
 export default {
     login,
+    signup,
     carts,
     products,
     realTimeProducts,

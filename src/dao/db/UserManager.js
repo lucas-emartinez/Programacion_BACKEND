@@ -7,6 +7,17 @@ class UserManager extends BaseManager {
         super(usersModel)
     }
 
+    // Metodo abstracto implementado
+    async findAll() {
+        try {
+            const users = await this.model.find();
+            return users;
+        } catch (error) {
+            return `Error al obtener los usuarios: ${error}`;
+        }
+    }
+
+    // Busca un usuario por email
     async findByEmail(email) {
         try {
             const user = await this.model.findOne({ email });

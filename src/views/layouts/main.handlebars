@@ -6,8 +6,25 @@
     <link rel="stylesheet" href="/css/{{style}}">
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
 </head>
+
 <body>
+    <header>
+        {{#if user}}
+            <nav>
+                <p>Hola {{user}}!</p>
+                <button id="logout">Logout</button>
+            </nav>
+        {{/if}}
+    </header>
     {{{body}}}
+    <footer>
+        <p>Lucas Martinez</p>
+        <i class="fas fa-rocket"></i>
+    </footer>
 </body>
+
 </html>
+
+<script src="/js/layout.js"></script>

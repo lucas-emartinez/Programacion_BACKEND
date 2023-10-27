@@ -59,3 +59,4 @@ socket.on('messageCreated', (data) => {
      messageLog.scrollTop = messageLog.scrollHeight;
 
 });
+

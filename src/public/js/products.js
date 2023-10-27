@@ -3,12 +3,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     const showMessage = (message) => {
-        
-        onAddResponse.innerHTML = message;
-
-        setTimeout(() => {
-            onAddResponse.lastChild.remove();
-        }, 2000); // 2000 milisegundos (2 segundos)
+        Toastify({
+            text: message,
+            duration: 1000,
+            newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: 'center', // `left`, `center` or `right`
+            backgroundColor: "green",
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            onClick: function () { } // Callback after click
+        }).showToast();
     };
 
     // Función que se ejecuta cuando se hace clic en un botón "Agregar al Carrito"
@@ -16,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const productId = event.target.dataset.id;
         const cartId= cart.dataset.cart;
+        
+        if (!cartId) return alert('Como el ejercicio dice que el usuario adminCoder no este en la base de datos NO SE CREA UN CART PARA EL.')
 
         try {
             const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
@@ -46,4 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
     addToCartButtons.forEach(button => {
         button.addEventListener('click', handleAddToCartClick);
     });
+
+    const toCart = document.getElementById('toCart');
+    toCart.addEventListener('click', async () => {
+        const cartId = cart.dataset.cart;
+        if (!cartId) {
+            return alert('Como el ejercicio dice que el usuario adminCoder no este en la base de datos NO SE CREA UN CART PARA EL.')
+        } else{
+            window.location.href = `/cart/${cartId}`;
+        }
+    })
 });

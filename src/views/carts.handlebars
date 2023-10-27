@@ -1,17 +1,20 @@
-<div>
-    {{#each products}}
-        <table>
-            <thead>
-                <tr>
-                    <th>Titulo</th>
-                    <th>Cantidad</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{this.product.title}}</td>
-                    <td>{{this.quantity}}</td>
-                </tr>
-            </tbody>
-    {{/each}}
+<div style="background-color: #F5F5F5; border-radius: 10px; padding: 20px; font-family: Arial, sans-serif;">
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background-color: #4CAF50; color: white;">
+                <th style="padding: 12px; text-align: left;">Titulo</th>
+                <th style="padding: 12px; text-align: left;">Precio</th>
+                <th style="padding: 12px; text-align: left;">Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each products}}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 12px;">{{this.product.title}}</td>
+                <td style="padding: 12px;">$ {{this.product.price}}</td>
+                <td style="padding: 12px;">{{this.quantity}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
 </div>

@@ -4,10 +4,10 @@
         <div class="head">
             <h1>Productos</h1>
             <div id="cart" data-cart="{{cart}}">
-                <a href="/carts/{{cart}}">Ir al Carrito </a>
+                <button id="toCart">Ir al Carrito </button>
             </div>
         </div>
-        <div id="addProductResponse"></div>
+       
         {{#if products}}
 
         <table class="productsTable">
@@ -18,8 +18,7 @@
                 <th class="categoryHead">Categoria</th>
                 <th class="stockHead">Stock</th>
                 <th class="priceHead">Precio</th>
-                <th class="statusHead">Status</th>
-                <th class="statusHead">Agregar al carrito</th>
+                <th></th>
             </tr>
             <tbody id="productsTableBody">
                 {{#each products}}
@@ -30,7 +29,6 @@
                     <td>{{this.category}}</td>
                     <td>{{this.stock}}</td>
                     <td>{{this.price}}</td>
-                    <td>{{this.status}}</td>
                     <td>
                         <button class="addButton" data-id="{{this._id}}">+</button>
                     </td>
@@ -54,5 +52,8 @@
         {{/if}}
     </div>
 </div>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 <script src="/js/products.js"></script>
+
