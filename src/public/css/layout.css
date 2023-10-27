@@ -21,39 +21,42 @@ footer {
 }
 
 nav {
-    background-color: #6d6d6d;
-    overflow: hidden;
-    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
 }
 
-.nav-chat {
-    outline: none;
-    font-style: normal;
-    overflow: hidden;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    z-index: 1;
+.nav-left {
+    display: flex;
+    align-items: center;
 }
 
+#nav-chat a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
 
-nav button {
-    float: right;
-    background-color: #4CAF50;
-    color: white;
-    height: 100%;
-    font-size: 17px;
-    border: none;
-    cursor: pointer;
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+#nav-welcome p {
     margin-right: 20px;
-    padding: 10px 15px;
-    border-radius: 12px;
-    font-family: 'Courier New', Courier, monospace;
 }
 
-nav button:hover {
-    background-color: #72af74;
-    color: #ffffff;
+#logout {
+    background-color: #fff;
+    color: #333;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 

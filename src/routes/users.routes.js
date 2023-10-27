@@ -6,6 +6,6 @@ const router = Router();
 
 router.post('/login', usersController.createSession);
 router.post('/signup', usersController.createUser);
-router.post('/logout', verifySession, usersController.destroySession); // Debe existir una session para destruirla
+router.post('/logout', usersController.destroySession); // Debe existir una session para destruirla
 
 export default router;

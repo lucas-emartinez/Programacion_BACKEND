@@ -13,15 +13,20 @@
     <header>
         {{#if user}}
             <nav>
-                <div id="nav-chat">
-                    <a href="/chat">Chat en vivo!</a>
+                <div class="nav-left">
+                    <div id="nav-chat">
+                        <a href="/chat">Chat en vivo!</a>
+                    </div>
                 </div>
-                <div id="nav-welcome">
-                    <p>Bienvenido {{user}} - Rol: {{admin}}</p>
+                <div class="nav-right">
+                    <div id="nav-welcome">
+                        <p>Bienvenido {{user}} - Rol: {{admin}}</p>
+                    </div>
+                    <button id="logout">Logout</button>
                 </div>
-                <button id="logout">Logout</button>
             </nav>
         {{/if}}
+
     </header>
     {{{body}}}
     <footer>
