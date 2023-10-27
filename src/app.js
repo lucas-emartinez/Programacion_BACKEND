@@ -36,8 +36,10 @@ app.set("view engine", "handlebars");
 const fileStore = FileStore(session);
 
 // Middlewares
+
+// NO ES NECESARIO COOKIEPARSER AL UTILIZAR EXPRESS-SESSION. ESTE YA LO INCLUYE
 const secret = "123456" // Solo para TESTING. Luego pasaremos esto a una variable de entorno ,env
-app.use(cookieParser(secret));
+app.use(cookieParser(secret)); 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
