@@ -4,6 +4,7 @@ import verifySession from '../middlewares/verifySession.js';
 
 const router = Router();
 
+router.get("/", viewsController.redirection)
 router.get("/login", viewsController.login)
 router.get("/signup", viewsController.signup)
 router.get("/carts/:cid", verifySession, viewsController.carts);

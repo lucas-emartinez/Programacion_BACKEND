@@ -21,15 +21,11 @@ const addProduct = async (req, res) => {
     const product = req.body;
     const file = req.file;
 
-    if (files) {
-        const images = files.map((file) => {
-            file.path = '/img/' + file.filename;
-            return file.path;
-        });
-
-        product.thumbnails = images;
-    }
-
+    if (file){
+        file.path = '/img/' + file.filename;
+        product.thumbnails.push(file.path)
+    } 
+    
     try {
 
         const result = await productManager.addProduct(product);

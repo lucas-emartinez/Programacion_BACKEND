@@ -1,14 +1,12 @@
-<div>
-
-    <div class="productsContainer">
-        <div class="head">
-            <h1>Productos</h1>
-            <div id="cart" data-cart="{{cart}}">
-                <button id="toCart">Ir al Carrito </button>
-            </div>
+<div class="productsContainer">
+    <div class="head">
+        <h1>Productos</h1>
+        <div id="cart" data-cart="{{cart}}">
+            <button id="toCart">Ir al Carrito </button>
         </div>
-       
-        {{#if products}}
+    </div>
+
+    {{#if products}}
 
         <table class="productsTable">
             <tr class="productsTableHead">
@@ -22,38 +20,36 @@
             </tr>
             <tbody id="productsTableBody">
                 {{#each products}}
-                <tr>
-                    <td>{{this.title}}</td>
-                    <td>{{this.description}}</td>
-                    <td>{{this.code}}</td>
-                    <td>{{this.category}}</td>
-                    <td>{{this.stock}}</td>
-                    <td>{{this.price}}</td>
-                    <td>
-                        <button class="addButton" data-id="{{this._id}}">+</button>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>{{this.title}}</td>
+                        <td>{{this.description}}</td>
+                        <td>{{this.code}}</td>
+                        <td>{{this.category}}</td>
+                        <td>{{this.stock}}</td>
+                        <td>{{this.price}}</td>
+                        <td>
+                            <button class="addButton" data-id="{{this._id}}">+</button>
+                        </td>
+                    </tr>
                 {{/each}}
             </tbody>
         </table>
         <div class="pageNumbers">
             {{#if prevPage}}
-            <a href="/products?page={{this.prevPage}}">Anterior</a>
+                <a href="/products?page={{this.prevPage}}">Anterior</a>
             {{/if}}
             {{#each pages}}
-            <a href="{{this}}">{{this}}</a>
+                <a href="{{this}}">{{this}}</a>
             {{/each}}
             {{#if nextPage}}
-            <a href="/products?page={{this.nextPage}}">Siguiente</a>
+                <a href="/products?page={{this.nextPage}}">Siguiente</a>
             {{/if}}
         </div>
-        {{else}}
+    {{else}}
         <h2 class="noProducts">No hay productos</h2>
-        {{/if}}
-    </div>
+    {{/if}}
 </div>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 <script src="/js/products.js"></script>
-

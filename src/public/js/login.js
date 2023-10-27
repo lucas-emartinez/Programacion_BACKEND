@@ -12,7 +12,6 @@ async function handleLogin(e) {
             },
             body: JSON.stringify(data),
         });
-        const result = await response.json()
         if (response.ok) {
             // Si la respuesta es correcta, muestra un toastify de éxito
             Toastify({
@@ -26,6 +25,7 @@ async function handleLogin(e) {
             }).showToast();
           
         } else{
+            const result = await response.json()
             // Si la respuesta no es correcta, muestra un toastify de error
             Toastify({
                 text: result.error,
@@ -35,9 +35,10 @@ async function handleLogin(e) {
         }
                 
     } catch (error) {
+        console.log(error)
         // Si hay un error, muestra un toastify de error
         Toastify({
-            text: 'Error al crear el usuario',
+            text: 'Error al iniciar sesion',
             duration: 3000,
             backgroundColor: 'linear-gradient(to right, #ff416c, #ff4b2b)',
         }).showToast();

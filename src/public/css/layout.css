@@ -21,24 +21,21 @@ footer {
 }
 
 nav {
-    background-color: #333;
+    background-color: #6d6d6d;
     overflow: hidden;
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: end; 
-    font-family: 'Courier New', Courier, monospace;
 }
 
-nav p {
-    float: left;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-    margin-right: 20px;
+.nav-chat {
+    outline: none;
+    font-style: normal;
+    overflow: hidden;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1;
 }
+
 
 nav button {
     float: right;

@@ -1,14 +1,20 @@
 import { productManager } from '../dao/db/ProductManager.js';
 import { cartManager } from '../dao/db/CartManager.js';
 
+const redirection = (req, res) => {
+    if (req.session.email) {
+        return res.redirect('/products');
+    }
+    return res.redirect('/login');
+}
 
-const login = async (req, res) => {
+const login = (req, res) => {
    return res.render('login', {
         style: 'login.css'
    });
 };
 
-const signup = async (req, res) => {
+const signup = (req, res) => {
     return res.render('signup', {
         style: 'signup.css'
    });
@@ -53,6 +59,7 @@ const realTimeProducts = async (req, res) => {
 }
 
 export default {
+    redirection,
     login,
     signup,
     carts,

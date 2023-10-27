@@ -16,6 +16,17 @@
 
                 </tbody>
             </table>
+            <div class="pageNumbers">
+                {{#if prevPage}}
+                    <a href="/products?page={{this.prevPage}}">Anterior</a>
+                {{/if}}
+                {{#each pages}}
+                    <a href="{{this}}">{{this}}</a>
+                {{/each}}
+                {{#if nextPage}}
+                    <a href="/products?page={{this.nextPage}}">Siguiente</a>
+                {{/if}}
+            </div>
         </div>
         <div class="addProductForm">
             <p>Agregue un producto</p>
@@ -52,3 +63,4 @@
 </div>
 <script src="socket.io/socket.io.js"></script>
 <script src="/js/realTimeProducts.js"></script>
+

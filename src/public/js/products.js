@@ -22,8 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const productId = event.target.dataset.id;
         const cartId= cart.dataset.cart;
         
-        if (!cartId) return alert('Como el ejercicio dice que el usuario adminCoder no este en la base de datos NO SE CREA UN CART PARA EL.')
-
         try {
             const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
                 method: 'POST',
@@ -47,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Obtén todos los botones "Agregar al Carrito"
     const addToCartButtons = document.querySelectorAll('.addButton');
     const cart = document.getElementById('cart');
-    const onAddResponse = document.getElementById('addProductResponse');
 
     // Asigna el evento clic a cada botón
     addToCartButtons.forEach(button => {
@@ -57,10 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const toCart = document.getElementById('toCart');
     toCart.addEventListener('click', async () => {
         const cartId = cart.dataset.cart;
-        if (!cartId) {
-            return alert('Como el ejercicio dice que el usuario adminCoder no este en la base de datos NO SE CREA UN CART PARA EL.')
-        } else{
-            window.location.href = `/cart/${cartId}`;
-        }
+        window.location.href = `/carts/${cartId}`;
     })
 });

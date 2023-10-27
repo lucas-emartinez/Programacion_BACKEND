@@ -64,16 +64,14 @@ const createSession = async (req, res) => {
     const { email, password } = req.body;
     
     try {
+        if(email !== "adminCoder@coder.com") {
 
-        if(email == "adminCoder@coder.com") {
-            console.log("ok")
             const userDatabase = await userManager.findByEmail(email);
             if (!userDatabase) return res.status(404).json({ error: "Usuario no encontrado" })
 
             const passwordMatch = await compareData(password, userDatabase.password);
             if (!passwordMatch) return res.status(400).json({ error: "El email o la contraseña son incorrectos" });
 
-            console.log(email, password)
             req.session["email"] = userDatabase.email;
             req.session["first_name"] = userDatabase.first_name;
             req.session["cart"] = userDatabase.cart._id;
@@ -81,11 +79,10 @@ const createSession = async (req, res) => {
 
             return res.redirect('/products');
         } else {
-
             if (req.body.password !== "adminCod3r123") return res.status(400).json({ error: "El email o la contraseña son incorrectos" });
-
             req.session["email"] = req.body.email;
             req.session["first_name"] = 'Coder Admin';
+            req.session["cart"] = '653bb65e8619f8ed2c4864aa' // Predefinido ya que el usuariop admin no esta creado en la base de datos
             req.session["isAdmin"] = true
 
             return res.redirect('/realtimeproducts');

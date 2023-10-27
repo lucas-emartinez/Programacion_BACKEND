@@ -1,61 +1,108 @@
+/* General styles */
 body {
-    background-color: #f5f5f5;
-    font-family: 'Roboto', sans-serif;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
+/* Header styles */
+h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    padding: 1rem;
+    text-align: center;
+}
+
+/* Products container styles */
 .productsContainer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem;
+    padding: 2rem;
+}
+
+/* Products table styles */
+.productsTable {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.productsTableHead {
+    background-color: #f2f2f2;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.productsTable th,
+.productsTable td {
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.productsTable td {
+    border-bottom: 1px solid #ddd;
+}
+
+/* Form styles */
+.addProductForm {
+    margin-top: 2rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .productsForm div {
     display: flex;
     flex-direction: column;
-    margin: 10px;
+    margin-bottom: 1rem;
 }
 
-.productsForm div input {
-    margin-top: 4px;
+.productsForm label {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.productsForm input {
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
 .productsForm button {
-    margin: 10px;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
 }
 
-.addProductForm {
-    margin-left: 100px;
+.productsForm button:hover {
+    background-color: #3e8e41;
 }
 
-.noProducts {
-    font-size: x-large;
-    font-weight: lighter;
+/* Pagination styles */
+.pageNumbers {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
 }
 
-.productsTable {
-    margin-top: 20px;
-    border-collapse: collapse;
+.pageNumbers a {
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    margin: 0 0.5rem;
+    text-decoration: none;
+    color: #000;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
-th, td {
-    padding: 15px;
-    text-align: left;
-}
-
-tr:hover {
-    background-color: rgb(255, 222, 210);
-}
-
-.productsTable tr {
-    border: 1px solid black;
-}
-
-.statusHead, .codeHead, .titleHead, .priceHead, .categoryHead, .descriptionHead, .stockHead {
-    background-color: #f5f5f5;
-    border: 1px solid black;
-}
-
-
-.noProducts {
-    font-size: x-large;
-    font-weight: lighter;
+.pageNumbers a:hover {
+    background-color: #f2f2f2;
 }
