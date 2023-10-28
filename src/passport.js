@@ -93,7 +93,7 @@ passport.use("github", new GithubStrategy({
             first_name: profile._json.name ? profile._json.name : profile._json.login,
             last_name: '',
             cart: cart._id,
-            email: profile._json.email,
+            email: profile._json.email ? profile._json.email : profile._json.login,
             password: profile._json.node_id,
             from_github: true,
         });
