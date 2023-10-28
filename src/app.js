@@ -1,11 +1,12 @@
 import express from "express";
 import session from "express-session";
-import FileStore from "session-file-store";
 import Websocket from "./config/socket.js";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import handlebars from "express-handlebars"
 import { __dirname } from "./utils.js";
+import passport from "passport";
+import "./passport.js"
 import "./db/config.js"
 
 // Rutas
@@ -32,9 +33,6 @@ app.set("views", __dirname + "/views");
 // Indicamos el motor de plantillas a utilizar
 app.set("view engine", "handlebars");
 
-// FyleSystem sessions
-const fileStore = FileStore(session);
-
 // Middlewares
 
 // NO ES NECESARIO COOKIEPARSER AL UTILIZAR EXPRESS-SESSION. ESTE YA LO INCLUYE
@@ -57,10 +55,14 @@ app.use(session(
     }
 ));
 
+// Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Endpoints
 app.use('/', viewsRouter)
 app.use('/api/users', usersRouter) // Ruteo de login y signup
-app.use('/api/products', productsRouter)
+app.use('/api/products', verifySession, productsRouter)
 app.use('/api/carts', verifySession, cartsRouter)
 
 // Servidor 

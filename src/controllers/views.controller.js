@@ -2,7 +2,7 @@ import { productManager } from '../dao/db/ProductManager.js';
 import { cartManager } from '../dao/db/CartManager.js';
 
 const redirection = (req, res) => {
-    if (req.session.email) {
+    if (req.session.passport.user.email) {
         return res.redirect('/products');
     }
     return res.redirect('/login');
@@ -25,7 +25,6 @@ const products = async (req, res) => {
     const result = await productManager.findAll(req.query);
     
     return res.render('products', {
-        cart: cart,
         prevPage: result.hasPrevPage ? result.page - 1 : null,
         page: result.page,
         nextPage: result.hasNextPage ? result.page + 1 : null,
@@ -50,7 +49,7 @@ const realTimeChat = async (req, res) => {
 }
 
 const realTimeProducts = async (req, res) => {
-    if(req.session.isAdmin) {
+    if(req.session.passport.user.role === 'admin') {
         return res.render('realTimeProducts', {
             style: 'realTimeProducts.css'
         });

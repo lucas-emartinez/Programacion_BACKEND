@@ -72,7 +72,7 @@
     max-width: 300px;
 }
 
-.container form button {
+.submitNormalLogin {
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -87,7 +87,30 @@
     font-weight: bold;
     margin-top: 10px;
 }
-
-.container form button:hover {
+.submitNormalLogin:hover {
     background-color: #0056b3;
+}
+
+.github-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #282a2c;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 24px;
+    width: 100%;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.github-button:hover {
+    background-color: #1c2023;
+}
+
+.github-button svg {
+    margin-right: 8px;
 }

@@ -26,6 +26,7 @@ class UserManager extends BaseManager {
             return `Error al obtener el usuario: ${error}`;
         }
     }
+
 }
 
 export const userManager = new UserManager();

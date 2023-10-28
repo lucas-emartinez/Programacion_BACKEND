@@ -7,7 +7,7 @@ const userSchema = new Schema({
     },
     last_name: {
         type: String,
-        required: true,
+        required: false,
     },
     email: {
         type: String,
@@ -17,7 +17,7 @@ const userSchema = new Schema({
     },
     birth_date: {
         type: Date,
-        required: true,
+        required: false,
     },
     password: {
         type: String,
@@ -37,7 +37,11 @@ const userSchema = new Schema({
     role: {
         type: String,
         default: 'user'
-    }
+    },
+    from_github: {
+        type: Boolean,
+        default: false
+    },
 }, {timestamps: true});
 
 // Middleware para población de 'products.product'
