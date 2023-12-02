@@ -31,3 +31,5 @@ export const generateToken = (user) => {
     return token
 }
 
+export const mongoIdRegex = new RegExp("^[0-9a-f]{24}$");
+

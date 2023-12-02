@@ -1,15 +1,14 @@
 import express from "express";
 import session from "express-session";
+import config from "./config/config.js";
 import Websocket from "./config/socket.js";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import handlebars from "express-handlebars"
 import { __dirname } from "./utils.js";
 import passport from "passport";
-import { URI } from "./db/config.js";
 import "./passport.js"
 import "./db/config.js"
-import { verifySession } from "./middlewares/verifiers.js";
 
 // Rutas
 import usersRouter from './routes/users.routes.js'
@@ -38,8 +37,7 @@ app.set("view engine", "handlebars");
 // Middlewares
 
 // NO ES NECESARIO COOKIEPARSER AL UTILIZAR EXPRESS-SESSION. ESTE YA LO INCLUYE
-const secret = "123456" // Solo para TESTING. Luego pasaremos esto a una variable de entorno ,env
-app.use(cookieParser(secret)); 
+app.use(cookieParser()); 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
@@ -51,7 +49,7 @@ app.use(session(
         },
         store: new MongoStore(
             {
-                mongoUrl: URI,
+                mongoUrl: config.mongoDB.url,
             }
         ),
     }

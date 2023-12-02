@@ -3,13 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!logoutButton) return;
   logoutButton.addEventListener('click', async () => {
       try {
-          const response = await fetch('/api/users/logout', {
+          const response = await fetch('/api/sessions/logout', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
               },
           });
-
           if (response.ok) {
               window.location.href = response.url;
           } else {

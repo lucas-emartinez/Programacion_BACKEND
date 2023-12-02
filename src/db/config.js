@@ -1,10 +1,8 @@
 import mongoose from "mongoose";
-
-export const URI = "mongodb+srv://lucasemartinez:DgveGoxDyMjqWHro@cursobackend.kttj3g1.mongodb.net/ecommerce?retryWrites=true&w=majority"
-
+import config from "../config/config.js";
 
 mongoose
-    .connect(URI, {
+    .connect(config.mongoDB.url, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })

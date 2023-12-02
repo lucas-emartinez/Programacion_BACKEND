@@ -1,12 +1,6 @@
 import { productManager } from '../dao/db/ProductManager.js';
 import { cartManager } from '../dao/db/CartManager.js';
-
-const redirection = (req, res) => {
-    if (req.session.passport?.user?.email) {
-        return res.redirect('/products');
-    }
-    return res.redirect('/login');
-}
+import { userManager } from '../dao/db/UserManager.js';
 
 const login = (req, res) => {
    return res.render('login', {
@@ -22,12 +16,13 @@ const signup = (req, res) => {
 
 const products = async (req, res) => {    
     const result = await productManager.findAll(req.query);
-    
+    const user =  await userManager.findByEmail(req.user.email);
     return res.render('products', {
         prevPage: result.hasPrevPage ? result.page - 1 : null,
         page: result.page,
         nextPage: result.hasNextPage ? result.page + 1 : null,
         products: result.payload,
+        cart: user.cart._id,
         style: 'products.css'
     });
 }
@@ -48,16 +43,12 @@ const realTimeChat = async (req, res) => {
 }
 
 const realTimeProducts = async (req, res) => {
-    if(req.session.passport.user.role === 'admin') {
         return res.render('realTimeProducts', {
             style: 'realTimeProducts.css'
         });
-    }
-    return res.redirect('/products');
-}
+};
 
 export default {
-    redirection,
     login,
     signup,
     carts,

@@ -5,8 +5,8 @@ import { Strategy as GithubStrategy } from "passport-github2";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { cartManager } from "./dao/db/CartManager.js";
-import { JWT_SECRET, compareData, hashData } from "./utils.js";
-
+import { JWT_SECRET, compareData, generateToken, hashData } from "./utils.js";
+import config from "./config/config.js";
 
 ///////// LOCAL STRATEGY //////////
 
@@ -46,6 +46,7 @@ const ExtractJWT = jwt.ExtractJwt;
 
     const cookieExtractor = (req) => {
         let token = null;
+        console.log(req.cookies)
         if (req && req.cookies) token = req.cookies.token;
         return token;
     }
@@ -61,37 +62,37 @@ const ExtractJWT = jwt.ExtractJwt;
             return done(error);
         }
     }));
-
-    // passport.use('google', new GoogleStrategy({
-    //     clientID: process.env.GOOGLE_CLIENT_ID,
-    //     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    //     callbackURL: process.env.GOOGLE_CALLBACK_URL,
-    // }, async (accessToken, refreshToken, profile, done) => {
-    //     try {
-    //         const user = await userManager.findByEmail(profile._json.email);
-    //         if(user){
-    //             if (user.from_google) {
-    //                 return done(null, user);
-    //             } else {
-    //                 return done(null, false);
-    //             }
-    //         }
+    
+    passport.use('google', new GoogleStrategy({
+        clientID: config.google.clientID,
+        clientSecret: config.google.clientSecret,
+        callbackURL: config.google.callbackURL,
+    }, async (accessToken, refreshToken, profile, done) => {
+        try {
+            const user = await userManager.findByEmail(profile._json.email);
+            if(user){
+                if (user.from_google) {
+                    return done(null, user);
+                } else {
+                    return done(null, false);
+                }
+            }
             
-    //         const cart = await cartManager.createOne({})
-    //         const newUser = await userManager.createOne({
-    //             first_name: profile._json.given_name,
-    //             last_name: profile._json.family_name,
-    //             cart: cart._id,
-    //             email: profile._json.email,
-    //             password: profile._json.sub,
-    //             from_google: true,
-    //         });
-            
-    //         return done(null, newUser);
-    //     } catch (error) {
-    //         return done(error);
-    //     }
-    // }));
+            const cart = await cartManager.createOne({})
+            const newUser = await userManager.createOne({
+                first_name: profile._json.given_name,
+                last_name: profile._json.family_name,
+                cart: cart._id,
+                email: profile._json.email,
+                password: profile._json.sub,
+                from_google: true,
+            });
+            return done(null, newUser);
+        } catch (error) {
+            console.log(error)
+            return done(error);
+        }
+    }));
 
     // LOGIN
     passport.use("login", new LocalStrategy(
@@ -128,9 +129,9 @@ const ExtractJWT = jwt.ExtractJwt;
     ///////// GITHUB STRATEGY //////////
 
     passport.use("github", new GithubStrategy({
-        clientID: 'Iv1.1e4c3d1ebe00b034',//process.env.GITHUB_CLIENT_ID,
-        clientSecret: 'b73a27d1d59877312d2d0a83e21dac23e1a78f3a', //process.env.GITHUB_CLIENT_SECRET,
-        callbackURL: "http://127.0.0.1:8080/api/users/auth/github/callback"
+        clientID: config.github.clientID,//process.env.GITHUB_CLIENT_ID,
+        clientSecret: config.github.clientSecret, //process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: config.github.callbackURL //process.env.GITHUB_CALLBACK_URL
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             const user = await userManager.findByEmail(profile._json.email);
