@@ -1,13 +1,19 @@
 import { Router } from 'express';
 import usersController from '../controllers/users.controller.js'
 import passport from 'passport';
+import { authMiddleware, jwtValidation } from '../middlewares/verifiers.js';
 
 const router = Router();
 
 
 
 
-router.get('/:userId', usersController.findUserById);
+router.get(
+    '/:userId', 
+    passport.authenticate('jwt', { session: false }),
+    authMiddleware(['user', 'admin']), 
+    usersController.findUserById
+);
 
 router.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
 
@@ -39,7 +45,7 @@ router.post(
     passport.authenticate(
       'signup', 
       {
-        successRedirect: '/products',
+        successRedirect: '/login',
         failureRedirect: '/signup'
       })
 );

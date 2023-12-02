@@ -36,9 +36,14 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
+        enum: ['admin', 'user'],
         default: 'user'
     },
     from_github: {
+        type: Boolean,
+        default: false
+    },
+    from_google: {
         type: Boolean,
         default: false
     },

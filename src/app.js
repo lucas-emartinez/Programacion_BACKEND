@@ -6,16 +6,18 @@ import MongoStore from "connect-mongo";
 import handlebars from "express-handlebars"
 import { __dirname } from "./utils.js";
 import passport from "passport";
+import { URI } from "./db/config.js";
 import "./passport.js"
 import "./db/config.js"
+import { verifySession } from "./middlewares/verifiers.js";
 
 // Rutas
 import usersRouter from './routes/users.routes.js'
 import viewsRouter from './routes/views.routes.js'
 import productsRouter from './routes/products.routes.js'
 import cartsRouter from './routes/carts.routes.js'
-import { URI } from "./db/config.js";
-import verifySession from "./middlewares/verifySession.js";
+import sessionsRouter from './routes/sessions.routes.js'
+
 
 
 // Inicializacion de Express
@@ -61,9 +63,10 @@ app.use(passport.session());
 
 // Endpoints
 app.use('/', viewsRouter)
+app.use('/api/sessions', sessionsRouter)
 app.use('/api/users', usersRouter) // Ruteo de login y signup
-app.use('/api/products', verifySession, productsRouter)
-app.use('/api/carts', verifySession, cartsRouter)
+app.use('/api/products', productsRouter)
+app.use('/api/carts',cartsRouter)
 
 // Servidor 
 const httpServer = app.listen(PORT, () => {

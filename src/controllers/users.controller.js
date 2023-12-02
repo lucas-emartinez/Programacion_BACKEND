@@ -1,6 +1,5 @@
-import { cartManager } from "../dao/db/CartManager.js";
 import { userManager } from "../dao/db/UserManager.js";
-import { compareData, hashData } from "../utils.js";
+import { compareData } from "../utils.js";
 
 
 // Busqueda de usuario por ID

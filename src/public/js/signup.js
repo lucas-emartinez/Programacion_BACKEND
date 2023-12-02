@@ -9,7 +9,7 @@ async function handleSubmit(e) {
     e.preventDefault();
     const form = new FormData(e.target);
     const data = Object.fromEntries(form.entries());
-    console.log(data)
+
     try {
         const response = await fetch('/api/users/signup', {
             method: 'POST',
@@ -18,9 +18,7 @@ async function handleSubmit(e) {
             },
             body: JSON.stringify(data),
         });
-        const result = await response.json();
         
-
         if (response.ok) {
             // Si la respuesta es correcta, muestra un toastify de éxito
             Toastify({

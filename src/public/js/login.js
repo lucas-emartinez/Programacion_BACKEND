@@ -5,25 +5,25 @@ async function handleLogin(e) {
     
     try {
 
-       const response = await fetch('/api/users/login', {
+       const response = await fetch('/api/sessions/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
         });
+        
         if (response.ok) {
             // Si la respuesta es correcta, muestra un toastify de éxito
             Toastify({
-                text: 'Sesión iniciada exitosamente',
+                text: 'Inicio de sesion exitoso',
                 duration: 1000,
                 backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
                 callback: function() {
                     // Redirect to login page after 2000 milliseconds
-                    window.location.href = response.url;
+                    window.location.href = '/products';
                 }
             }).showToast();
-          
         } else{
             const result = await response.json()
             // Si la respuesta no es correcta, muestra un toastify de error

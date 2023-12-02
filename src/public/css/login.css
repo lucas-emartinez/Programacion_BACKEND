@@ -108,9 +108,34 @@
 }
 
 .github-button:hover {
-    background-color: #1c2023;
+    background-color: #4e5255;
 }
 
 .github-button svg {
     margin-right: 8px;
 }
+
+.google-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(207, 180, 89);
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 24px;
+    width: 100%;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.google-button:hover {
+    background-color: rgb(204, 191, 147);
+}
+
+.google-button svg {
+    margin-right: 8px;
+}
+

@@ -2,7 +2,7 @@ import { productManager } from '../dao/db/ProductManager.js';
 import { cartManager } from '../dao/db/CartManager.js';
 
 const redirection = (req, res) => {
-    if (req.session.passport.user.email) {
+    if (req.session.passport?.user?.email) {
         return res.redirect('/products');
     }
     return res.redirect('/login');
@@ -21,7 +21,6 @@ const signup = (req, res) => {
 }
 
 const products = async (req, res) => {    
-    const cart = req.session.cart;
     const result = await productManager.findAll(req.query);
     
     return res.render('products', {

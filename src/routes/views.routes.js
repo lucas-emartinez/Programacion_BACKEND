@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import viewsController from '../controllers/views.controller.js';
-import verifySession from '../middlewares/verifySession.js';
+import { verifySession } from '../middlewares/verifiers.js';
 
 const router = Router();
 
