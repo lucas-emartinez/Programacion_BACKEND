@@ -49,11 +49,6 @@ const userSchema = new Schema({
     },
 }, {timestamps: true});
 
-// Middleware para población de 'products.product'
-userSchema.pre(['find', 'findOne', 'findOneAndUpdate', 'findById'], function () {
-    this.populate('cart');
-});
-
 
 
 export const usersModel = model('User', userSchema);

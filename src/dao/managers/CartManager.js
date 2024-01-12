@@ -1,18 +1,11 @@
 import { cartsModel } from '../models/carts.model.js';
 import { productManager } from './ProductManager.js';
-import BaseManager from './BaseManager.js';
-import errors from '../../config/errors.js';
-
-const {
-    CART_NOT_EXIST,
-    PRODUCT_NOT_EXIST,
-    PRODUCT_TO_DELETE_NOT_EXIST
-} = errors;
+import BaseManager from './baseManager.js';
 
 
 class CartManager extends BaseManager {
     constructor() {
-        super(cartsModel)
+        super(cartsModel, "products.product")
     }        
 
     async addProductToCart(cartId, productId) {
@@ -36,26 +29,26 @@ class CartManager extends BaseManager {
             
             return result;
         } catch (error) {
-            return `Error al añadir el producto al carrito: ${error}`;
+            return `Error al añadir el producto al carrito`;
         }
     }
 
     async updateCart(cartId, cart) {
         try {
-            const result = await this.model.findByIdAndUpdate(cartId, cart);
+            const result = await this.model.findByIdAndUpdate(cartId, cart).populate(this.populateOption);
             return result;
         } catch (error) {
-            return `Error al actualizar el carrito: ${error}`;
+            return `Error al actualizar el carrito`;
         }
     }
 
     async updateProductQuantity(cartId, productId, quantity) {
         try {
             const cart = await this.model.findById(cartId);
-            if (!cart) return CART_NOT_EXIST;
+            if (!cart) return 'El carrito no existe'
 
             const product = cart.products.find(p => p.product._id == productId);
-            if (!product) return PRODUCT_NOT_EXIST;
+            if (!product) return 'El producto no existe';
 
             if (quantity === 0) {
                 return await this.deleteProductFromCart(cartId, productId);
@@ -74,7 +67,7 @@ class CartManager extends BaseManager {
     async deleteAllProductsFromCart(cartId) {
         try {
             const cart = await this.model.findById(cartId);
-            if (!cart) return CART_NOT_EXIST;
+            if (!cart) return 'El carrito no existe';
 
             cart.products = [];
 
@@ -88,25 +81,33 @@ class CartManager extends BaseManager {
 
     async getProductsByCartId(cartId) {
         try {
-            const cart = await this.model.findById(cartId);
+            const cart = await this.model.findById(cartId).populate(this.populateOption);
             
-            if (!cart) return CART_NOT_EXIST;
-
-            const products = cart.products;
-
+            if (!cart) return 'El carrito no existe';
+            
+            const products = cart.products 
             return products;
         } catch (error) {
             return `Error al obtener los productos del carrito`;
         }
     }
 
+    async getCart(cartId) {
+        try {
+            const cart = await this.model.findById(cartId).populate(this.populateOption);
+            return cart;
+        } catch (error) {
+            return `Error al obtener el carrito`;
+        }
+    }
+
     async deleteProductFromCart(cartId, productId) {
         try {
             const cart = await this.model.findById(cartId);
-            if (!cart) return CART_NOT_EXIST;
+            if (!cart) return 'El carrito no existe';
 
             const product = cart.products.find(p => p.product._id == productId);
-            if (!product) return PRODUCT_TO_DELETE_NOT_EXIST;
+            if (!product) return 'El producto no existe';
 
             cart.products = cart.products.filter(p => p.product._id != productId);
 

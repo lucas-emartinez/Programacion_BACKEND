@@ -12,18 +12,14 @@ const cartsSchema = Schema({
             quantity: {
                 type: Number,
                 required: true
-            }
+            },
+            _id: false
         }
     ],
-    // No es necesario especificar `default: []` ya que por defecto será un array vacío.
 },
     { timestamps: true }
 );
 
-// Middleware para población de 'products.product'
-cartsSchema.pre(['find', 'findOne', 'findOneAndUpdate', 'findById'], function () {
-    this.populate('products.product');
-});
 
 // Middleware para paginación
 cartsSchema.plugin(mongoosePaginate)

@@ -1,7 +1,6 @@
 import uploader from '../multer.js';
 import { Router } from 'express';
-
-import productsController from '../controllers/products.controller.js';
+import { productController } from '../controllers/products.controller.js';
 import passport from 'passport';
 import { authMiddleware } from '../middlewares/verifiers.js';
 
@@ -13,7 +12,7 @@ router.get(
         session: false,
     }),
     authMiddleware(['user', 'admin']),  
-    productsController.getProducts
+    productController.getProducts
 );
 router.get(
     "/:pid", 
@@ -22,7 +21,7 @@ router.get(
         failureRedirect: "/login"
     }),
     authMiddleware(['user', 'admin']),  
-    productsController.getProductById
+    productController.getProductById
 );
 router.post(
     "/", 
@@ -32,7 +31,7 @@ router.post(
     }),
     authMiddleware([ 'admin']),  
     uploader.single('file'), 
-    productsController.addProduct
+    productController.addProduct
     );
 
 router.put(
@@ -42,7 +41,7 @@ router.put(
         failureRedirect: "/login"
     }),
     authMiddleware(['admin']),  
-    productsController.updateProduct
+    productController.updateProduct
 )
 
 router.delete(
@@ -52,7 +51,7 @@ router.delete(
         failureRedirect: "/login"
     }),
     authMiddleware(['admin']),  
-    productsController.deleteProduct
+    productController.deleteProduct
 )
 
 router.param(

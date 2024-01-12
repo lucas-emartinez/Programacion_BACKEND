@@ -12,23 +12,16 @@ async function handleLogin(e) {
             },
             body: JSON.stringify(data),
         });
-        
-        if (response.ok) {
-            // Si la respuesta es correcta, muestra un toastify de éxito
+        if(response.ok){
             Toastify({
-                text: 'Inicio de sesion exitoso',
-                duration: 1000,
+                text: 'Sesion iniciada correctamente',
+                duration: 3000,
                 backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
             }).showToast();
-        } else{
-            // Si la respuesta no es correcta, muestra un toastify de error
-            Toastify({
-                text: result.error,
-                duration: 3000,
-                backgroundColor: 'linear-gradient(to right, #ff416c, #ff4b2b)',
-            }).showToast();
+            const result = await response.json();
+            window.location.href = result.redirect;
         }
-                
+ 
     } catch (error) {
         console.log(error)
         // Si hay un error, muestra un toastify de error

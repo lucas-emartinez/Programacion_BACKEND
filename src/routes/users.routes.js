@@ -1,44 +1,13 @@
-import { Router } from 'express';
-import usersController from '../controllers/users.controller.js'
-import passport from 'passport';
+import { userController } from '../controllers/users.controller.js'
 import { authMiddleware } from '../middlewares/verifiers.js';
+import { Router } from 'express';
+
 
 const router = Router();
 
 
-router.get(
-    '/:userId', 
-    passport.authenticate('jwt', { 
-        session: false,
-        failureRedirect: "/login"
-    }),
-    authMiddleware(['user', 'admin']), 
-    usersController.findUserById
-);
-
-
-router.post('/logout', usersController.destroySession);
-
-router.post(
-    '/login', 
-    passport.authenticate(
-        'login', 
-        {
-            successRedirect: '/products',
-            failureRedirect: '/login'
-        })
-);
-
-router.post(
-    '/signup', 
-    passport.authenticate(
-      'signup', 
-      {
-        successRedirect: '/login',
-        failureRedirect: '/signup'
-      })
-);
-
+router.get('/:userId',  userController.findUserById);
+router.post('/signup', userController.signup);
 
 
 export default router;

@@ -1,10 +1,10 @@
 import passport from "passport";
 import jwt from "passport-jwt"
-import { userManager } from "./dao/db/UserManager.js";
+import { userManager } from "./dao/managers/UserManager.js";
 import { Strategy as GithubStrategy } from "passport-github2";	
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import { cartManager } from "./dao/db/CartManager.js";
+import { cartManager } from "./dao/managers/CartManager.js";
 import { JWT_SECRET, compareData, generateToken, hashData } from "./utils.js";
 import config from "./config/config.js";
 
@@ -13,36 +13,7 @@ import config from "./config/config.js";
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
 
-    // SIGN UP
-    passport.use("signup", new LocalStrategy(
-        { 
-            usernameField: "email",
-            passReqToCallback: true
-        },
-        async (req, email, password, done) => {
-            try {
-                const { first_name, last_name, birth_date } = req.body;
-                
-                const userExist = await userManager.findByEmail(email);
-                if (userExist) return done(null, false, { message: "El email ya existe" });
 
-                const hashedPassword = await hashData(password);
-                const cart = await cartManager.createOne({});
-                const user = {
-                    first_name,
-                    last_name,
-                    email,
-                    birth_date,
-                    password: hashedPassword,
-                    cart: cart._id
-                }
-                const newUser = await userManager.createOne(user);
-                return done(null, newUser);
-            } catch (error) {
-                return done(error);
-            }
-        })
-    );
 
     const cookieExtractor = (req) => {
         let token = null;

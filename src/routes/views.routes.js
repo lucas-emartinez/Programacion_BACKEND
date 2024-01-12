@@ -1,61 +1,50 @@
 import { Router } from 'express';
-import viewsController from '../controllers/views.controller.js';
+import { viewController } from '../controllers/views.controller.js';
 import { authMiddleware } from '../middlewares/verifiers.js';
 import passport from 'passport';
 import { mongoIdRegex } from '../utils.js';
 
 const router = Router();
 
-router.get(
-    "/",
-    passport.authenticate('jwt', { 
-        session: false, 
-        failureRedirect: "/login",
-        successRedirect: "/products"
-     })
-)
-router.get("/login", viewsController.login)
+router.get("/login", viewController.login)
+router.get("/signup", viewController.signup)
 
-router.get("/signup", viewsController.signup)
-
-router.get(
-    "/carts/:cid", 
+router.get("/carts/:cid", 
     passport.authenticate('jwt', 
     { 
         session: false,
         failureRedirect: "/login",
     }),
     authMiddleware(['user', 'admin']),
-    viewsController.carts
+    viewController.carts
 );
 
-router.get(
-    "/products", 
+router.get("/products", 
     passport.authenticate('jwt', { 
         session: false,
         failureRedirect: "/login"
     }),
     authMiddleware(['user', 'admin']),
-    viewsController.products
+    viewController.products
 );
 
-router.get(
-    "/chat",
+router.get("/chat",
     passport.authenticate('jwt', { 
         session: false,
         failureRedirect: "/login",
     }),
     authMiddleware(['user', 'admin']),
-    viewsController.realTimeChat);
+    viewController.realTimeChat
+);
 
-router.get(
-    "/realtimeproducts", 
+router.get("/realtimeproducts", 
     passport.authenticate('jwt', { 
         session: false,
         failureRedirect: "/login",
     }),
     authMiddleware(['admin']),
-    viewsController.realTimeProducts);
+    viewController.realTimeProducts
+);
 
 router.param('cid', (req, res, next, cid) => {
     if (!mongoIdRegex.test(cid)) {

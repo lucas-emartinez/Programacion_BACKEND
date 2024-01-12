@@ -1,16 +1,10 @@
 import { productsModel } from '../models/products.model.js';
-import BaseManager from './BaseManager.js';
-import errors from '../../config/errors.js';
-
-const {
-    GET_PRODUCTS_ERROR
-} = errors;
+import BaseManager from './baseManager.js';
 
 class ProductManager extends BaseManager{
     constructor() {
         super(productsModel);
     }
-
 
     // Implementacion de metodo abstracto
     async findAll(options) {
@@ -29,6 +23,7 @@ class ProductManager extends BaseManager{
             limit: limit ? limit : 10,
             page: page ? page : 1,
             sort: (sort === 'asc' || sort === 'desc') ? {price: sort == 'asc' ? 1 : -1 }: null,
+            lean: true
         }
         
         // Filtro a pasarle al paginate
@@ -47,7 +42,7 @@ class ProductManager extends BaseManager{
             
             const info = {
                 status: 'success',
-                payload: result.docs.map(doc => doc.toObject()), // Ya que mongoose-paginate-v2 no admite LEAN().
+                payload: result.docs, // Ya que mongoose-paginate-v2 no admite LEAN().
                 totalPages: result.totalPages,
                 prevPage: result.prevPage,
                 nextPage: result.nextPage,
@@ -66,7 +61,7 @@ class ProductManager extends BaseManager{
         } catch (error) {
             return {
                 status: 'error',
-                error: GET_PRODUCTS_ERROR
+                error: 'Error al obtener los productos'
             };
         }
     }

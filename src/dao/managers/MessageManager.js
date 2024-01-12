@@ -1,5 +1,5 @@
 import { messagesModel } from "../models/messages.model.js";
-import BaseManager from "./BaseManager.js";
+import BaseManager from "./baseManager.js";
 
 class MessageManager extends BaseManager {
     constructor() {

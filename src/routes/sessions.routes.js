@@ -1,12 +1,12 @@
 import { Router } from "express";
-import sessionsController from "../controllers/sessions.controller.js";
+import { sessionController } from "../controllers/sessions.controller.js";
 import passport from "passport";
 
 const router = Router();
 
-router.post("/login", sessionsController.login);
+router.post("/login", sessionController.login);
 
-router.post("/logout", sessionsController.logout);
+router.post("/logout", sessionController.logout);
 
 router.get(
     '/auth/github', 
@@ -24,7 +24,7 @@ router.get(
             failureRedirect: '/login',
         }
     ),
-        sessionsController.githubLogin
+    sessionController.githubLogin
 )
 
 router.get(
@@ -41,7 +41,7 @@ router.get(
             failureRedirect: '/login',
         }
     ),
-    sessionsController.googleLogin
+    sessionController.googleLogin
 );
 
 export default router;

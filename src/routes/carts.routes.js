@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import cartsController from '../controllers/carts.controller.js';
+import { cartController } from '../controllers/carts.controller.js';
 import { mongoIdRegex } from '../utils.js';
 import passport from 'passport';
 import { authMiddleware } from '../middlewares/verifiers.js';
@@ -14,7 +14,7 @@ router.route("/")
             failureRedirect: "/login"
         }),
         authMiddleware(['user', 'admin']),  
-        cartsController.getCarts
+        cartController.findAll
     )
     .post(
         passport.authenticate('jwt', { 
@@ -22,7 +22,7 @@ router.route("/")
             failureRedirect: "/login"
         }),
         authMiddleware(['user', 'admin']),  
-        cartsController.addCarrito
+        cartController.addCarrito
     )
 
 router.route("/:cid")
@@ -32,7 +32,7 @@ router.route("/:cid")
             failureRedirect: "/login"
         }),
         authMiddleware(['user', 'admin']),  
-        cartsController.getProductsFromCart
+        cartController.findById
     )
     .delete(
         passport.authenticate('jwt', { 
@@ -40,7 +40,7 @@ router.route("/:cid")
             failureRedirect: "/login"
         }),
         authMiddleware(['admin']),  
-        cartsController.deleteAllProductsFromCart
+        cartController.deleteAllProductsFromCart
     )
 
 router.route("/:cid/products/:pid")
@@ -50,7 +50,7 @@ router.route("/:cid/products/:pid")
             failureRedirect: "/login"
         }),
         authMiddleware(['user', 'admin']),  
-        cartsController.updateProductQuantity
+        cartController.updateProductQuantity
     )
     .post(
         passport.authenticate('jwt', {
@@ -58,7 +58,7 @@ router.route("/:cid/products/:pid")
             failureRedirect: "/login"
         }),
         authMiddleware(['user', 'admin']),  
-        cartsController.addProductToCart
+        cartController.addProductToCart
     )
     .delete(
         passport.authenticate('jwt', { 
@@ -66,7 +66,7 @@ router.route("/:cid/products/:pid")
             failureRedirect: "/login"
         }),
         authMiddleware(['user', 'admin']),  
-        cartsController.deleteProductFromCart
+        cartController.deleteProductFromCart
     )
     
 // route middleware

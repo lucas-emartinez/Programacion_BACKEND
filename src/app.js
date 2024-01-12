@@ -8,10 +8,11 @@ import handlebars from "express-handlebars"
 import { __dirname } from "./utils.js";
 import passport from "passport";
 import "./passport.js"
-import "./db/config.js"
+import database from "./db/config.js"
+
 
 // Rutas
-import usersRouter from './routes/users.routes.js'
+import userRouter  from './routes/users.routes.js'
 import viewsRouter from './routes/views.routes.js'
 import productsRouter from './routes/products.routes.js'
 import cartsRouter from './routes/carts.routes.js'
@@ -22,11 +23,23 @@ import sessionsRouter from './routes/sessions.routes.js'
 // Inicializacion de Express
 const app = express();
 
+
 // Definicion de puerto
-const PORT = process.env.PORT || 8080;
+const PORT = config.PORT
+
+
+// Conexion a la base de datos
+database.getInstance();
+
+
 
 // Inicializacion de motor de plantillas
-app.engine("handlebars", handlebars.engine());
+app.engine("handlebars", handlebars.engine({
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true,
+    }
+}));
 
 // Vistas
 app.set("views", __dirname + "/views");
@@ -62,9 +75,9 @@ app.use(passport.session());
 // Endpoints
 app.use('/', viewsRouter)
 app.use('/api/sessions', sessionsRouter)
-app.use('/api/users', usersRouter) // Ruteo de login y signup
+app.use('/api/users', userRouter) 
 app.use('/api/products', productsRouter)
-app.use('/api/carts',cartsRouter)
+app.use('/api/carts', cartsRouter)
 
 // Servidor 
 const httpServer = app.listen(PORT, () => {
