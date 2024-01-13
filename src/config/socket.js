@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
-import { productManager } from "../dao/managers/ProductManager.js";
-import { messageManager } from "../dao/managers/MessageManager.js";
+import { productService } from "../services/products.service.js";
+import { messageService } from "../services/messages.service.js";
 
 const Websocket = (httpServer) => {
 
@@ -17,7 +17,7 @@ const Websocket = (httpServer) => {
 
         // Obtencion de productos actuales 
         try {
-            const products = await productManager.findAll({});
+            const products = await productService.findAll({});
             socket.emit('products', products);
         } catch (error) {
             socket.emit('error', "No se pudieron obtener los productos");
@@ -36,7 +36,7 @@ const Websocket = (httpServer) => {
         // Actualizacion de productos
         socket.on('productUpdated', async (product) => {
             try {
-                const updatedProduct = await productManager.updateOne(product);
+                const updatedProduct = await productService.updateOne(product);
                 productsSpace.emit('updatedProduct', updatedProduct);
             } catch (error) {
                 socket.emit('error', "No se pudo actualizar el producto");
@@ -46,7 +46,7 @@ const Websocket = (httpServer) => {
         // Eliminacion de productos
         socket.on('productDeleted', async (product) => {
             try {
-                const deletedProduct = await productManager.deleteOne(product);
+                const deletedProduct = await productService.deleteOne(product);
                 productsSpace.emit('deletedProduct', deletedProduct);
             } catch (error) {
                 socket.emit('error', "No se pudo eliminar el producto");
@@ -74,7 +74,7 @@ const Websocket = (httpServer) => {
             // Nuevo mensaje del chat
             socket.on('newMessage', async (message) => {
                 try {
-                    const newMsg = await messageManager.createOne(message);
+                    const newMsg = await messageService.createOne(message);
                     chatSpace.emit('messageCreated', newMsg);
                 } catch (error) {
                     socket.emit('error', "No se pudo enviar el mensaje");

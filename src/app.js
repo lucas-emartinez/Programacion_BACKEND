@@ -1,10 +1,12 @@
 import express from "express";
 import session from "express-session";
-import config from "./config/config.js";
+import config from "./config/env.js";
 import Websocket from "./config/socket.js";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import handlebars from "express-handlebars"
+
+import cors from "cors"
 import { __dirname } from "./utils.js";
 import passport from "passport";
 import "./passport.js"
@@ -17,6 +19,7 @@ import viewsRouter from './routes/views.routes.js'
 import productsRouter from './routes/products.routes.js'
 import cartsRouter from './routes/carts.routes.js'
 import sessionsRouter from './routes/sessions.routes.js'
+import { corsOptions } from "./config/cors.js";
 
 
 
@@ -30,8 +33,6 @@ const PORT = config.PORT
 
 // Conexion a la base de datos
 database.getInstance();
-
-
 
 // Inicializacion de motor de plantillas
 app.engine("handlebars", handlebars.engine({
@@ -50,6 +51,7 @@ app.set("view engine", "handlebars");
 // Middlewares
 
 // NO ES NECESARIO COOKIEPARSER AL UTILIZAR EXPRESS-SESSION. ESTE YA LO INCLUYE
+app.use(cors(corsOptions))
 app.use(cookieParser()); 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

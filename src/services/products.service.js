@@ -1,9 +1,8 @@
-import { productManager } from "../dao/managers/ProductManager.js";
-
+import { productManager } from "../dao/mongoDAO/ProductManager.js";
 
 class ProductService {
     constructor() {
-        this.productManager = productManager;
+        this.productManager = productManager
     }
 
     async findAll(opts) {

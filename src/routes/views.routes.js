@@ -9,18 +9,18 @@ const router = Router();
 router.get("/login", viewController.login)
 router.get("/signup", viewController.signup)
 
-router.get("/carts/:cid", 
-    passport.authenticate('jwt', 
-    { 
-        session: false,
-        failureRedirect: "/login",
-    }),
+router.get("/carts/:cid",
+    passport.authenticate('jwt',
+        {
+            session: false,
+            failureRedirect: "/login",
+        }),
     authMiddleware(['user', 'admin']),
     viewController.carts
 );
 
-router.get("/products", 
-    passport.authenticate('jwt', { 
+router.get("/products",
+    passport.authenticate('jwt', {
         session: false,
         failureRedirect: "/login"
     }),
@@ -29,7 +29,7 @@ router.get("/products",
 );
 
 router.get("/chat",
-    passport.authenticate('jwt', { 
+    passport.authenticate('jwt', {
         session: false,
         failureRedirect: "/login",
     }),
@@ -37,8 +37,8 @@ router.get("/chat",
     viewController.realTimeChat
 );
 
-router.get("/realtimeproducts", 
-    passport.authenticate('jwt', { 
+router.get("/realtimeproducts",
+    passport.authenticate('jwt', {
         session: false,
         failureRedirect: "/login",
     }),

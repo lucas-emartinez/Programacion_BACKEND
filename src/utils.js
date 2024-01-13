@@ -2,8 +2,8 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import config from './config/env.js';
 
-export const JWT_SECRET = 'JWTSecret';
 export const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const hashData = async (data) => {
@@ -25,7 +25,7 @@ export const generateToken = (user) => {
             email: user.email,
             role: user.role
         },
-        JWT_SECRET,
+        config.JWT_SECRET,
         { expiresIn: '1h' }
     );
     return token

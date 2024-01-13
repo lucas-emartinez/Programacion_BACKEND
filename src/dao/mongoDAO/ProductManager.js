@@ -59,10 +59,10 @@ class ProductManager extends BaseManager{
             return info;
 
         } catch (error) {
-            return {
+            throw new Error({
                 status: 'error',
                 error: 'Error al obtener los productos'
-            };
+            });
         }
     }
 }

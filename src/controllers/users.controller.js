@@ -46,7 +46,7 @@ class UserController {
 
         try {
             const result = await this.userService.createSession(email, password);
-            console.log(result)
+
             Object.assign(req.session, result.sessionData);
 
             return res.redirect(result.path);

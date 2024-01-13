@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import config from "../config/config.js";
+import config from "../config/env.js";
 
 export default class MongoSingleton {
 
@@ -15,6 +15,7 @@ export default class MongoSingleton {
 
     static getInstance() {
         if (this.#instance){
+            console.log("Ya existe una instancia de Mongo");
             return this.#instance;
         }
         this.#instance = new MongoSingleton();

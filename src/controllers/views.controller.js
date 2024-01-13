@@ -59,6 +59,13 @@ class ViewController {
             style: 'realTimeProducts.css'
         });
     };
+
+    home = (req, res) => {
+        if (req.user.role === 'admin') {
+            return res.redirect('/realtimeproducts');
+        }
+        return res.redirect('/products');
+    }
 }
 
 export const viewController = new ViewController();

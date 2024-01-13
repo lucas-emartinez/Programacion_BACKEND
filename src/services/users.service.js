@@ -1,8 +1,8 @@
-import { cartManager } from "../dao/managers/CartManager.js";
-import { userManager } from "../dao/managers/UserManager.js"
 import { compareData, hashData } from "../utils.js";
+import { userManager } from "../dao/mongoDAO/UserManager.js";
+import { cartManager } from "../dao/mongoDAO/CartManager.js";
 
-class UserService {
+class UserService {s
 
     constructor() {
         this.userManager = userManager;
@@ -23,21 +23,23 @@ class UserService {
          
     }
 
-    async createUser() {
-        const userExist = await this.userManager.findByEmail(email);
-        if (userExist) return res.status(400).json({ error: "El email ya existe" });
+    async createUser(user) {
+        const userExist = await this.userManager.findByEmail(user.email);
+        if (userExist) throw new Error("El usuario ya existe");
 
-        const hashedPassword = await hashData(password);
+        const hashedPassword = await hashData(user.password);
         const cart = await this.cartManager.createOne({ products: [] });
-        const user = {
-            first_name,
-            last_name,
-            email,
-            birth_date,
+
+        const userData = {
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            birth_date: user.birth_date,
             password: hashedPassword,
             cart: cart._id,
         }
-        const newUser = this.userManager.createOne(user);
+
+        const newUser = this.userManager.createOne(userData);
         return newUser
     }
 

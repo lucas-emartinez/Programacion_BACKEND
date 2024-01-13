@@ -18,10 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Función que se ejecuta cuando se hace clic en un botón "Agregar al Carrito"
     const handleAddToCartClick = async (event) => {
-        
+
         const productId = event.target.dataset.id;
-        const cartId= cart.dataset.cart;
-        
+        const cartId = cart.dataset.cart;
+
         try {
             const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
                 method: 'POST',
@@ -32,8 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 showMessage(`Producto agregado al carrito correctamente`);
-                
-                console.log('Producto agregado al carrito correctamente');
             } else {
                 console.error('Error al agregar el producto al carrito');
             }

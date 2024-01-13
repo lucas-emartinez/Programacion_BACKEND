@@ -6,7 +6,7 @@ import { Router } from 'express';
 const router = Router();
 
 
-router.get('/:userId',  userController.findUserById);
+router.get('/:userId', authMiddleware(['user', 'admin']), userController.findUserById);
 router.post('/signup', userController.signup);
 
 

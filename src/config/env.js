@@ -24,4 +24,5 @@ export default {
         callbackURL: process.env.GITHUB_CALLBACK_URL,
     },
     PORT: process.env.PORT,
+    JWT_SECRET: process.env.JWT_SECRET
 }
